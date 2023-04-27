@@ -114,6 +114,43 @@ const Input = (props: IInput) => (
   </div>
 );
 
+interface IOption {
+  value: string;
+  label: string;
+}
+
+interface ISelect {
+  id: string;
+  label: string;
+  defaultValue?: string;
+  onChange: InputHTMLAttributes<HTMLSelectElement>["onChange"];
+  options: IOption[];
+}
+
+const Select = (props: ISelect) => (
+  <div className="space-y-2">
+    <label
+      htmlFor={props.id}
+      className="block text-sm font-medium leading-6 text-white"
+    >
+      {props.label}
+    </label>
+    <select
+      id={props.id}
+      name={props.id}
+      defaultValue={props.defaultValue}
+      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 [&_*]:text-black"
+      onChange={props.onChange}
+    >
+      {props.options.map((option, key) => (
+        <option key={key} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
 export default function Home() {
   const thumbnailRef = useRef<HTMLDivElement>(null);
   const [title, setTitle] = useState("");
@@ -157,25 +194,30 @@ export default function Home() {
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
               />
-              <div className="space-y-2">
-                <label
-                  htmlFor="color"
-                  className="block text-sm font-medium leading-6 text-white"
-                >
-                  Cor Primária
-                </label>
-                <select
-                  id="color"
-                  name="color"
-                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 [&_*]:text-black"
-                  onChange={handleColorChange}
-                >
-                  <option value="red">Vermelho</option>
-                  <option value="green">Verde</option>
-                  <option value="blue">Azul</option>
-                  <option value="yellow">Amarelo</option>
-                </select>
-              </div>
+              <Select
+                id="color"
+                label="Cor Primária"
+                defaultValue="red"
+                onChange={handleColorChange}
+                options={[
+                  {
+                    value: "red",
+                    label: "Vermelho (#ef4444)",
+                  },
+                  {
+                    value: "green",
+                    label: "Verde (#22c55e)",
+                  },
+                  {
+                    value: "blue",
+                    label: "Azul (#3b82f6)",
+                  },
+                  {
+                    value: "yellow",
+                    label: "Amarelo (#f59e0b)",
+                  },
+                ]}
+              />
             </div>
           </div>
         </div>
