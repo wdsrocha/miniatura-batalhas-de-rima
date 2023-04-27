@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-higher)'],
+        normal: ['var(--font-higher)'],
         mono: ['var(--font-higher)'],
       },
       backgroundImage: {
