@@ -165,8 +165,19 @@ export default function Home() {
       // but not expected. TODO: verify if I can trust this magic behavior
       const base64image = await toPng(thumbnailRef.current);
 
+      // https://gist.github.com/codeguy/6684588?permalink_comment_id=3361909#gistcomment-3361909
+      const slug = title
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]+/g, "")
+        .replace(/--+/g, "-");
+
       const link = document.createElement("a");
-      link.download = "image.png";
+      link.download = `${slug}.png`;
       link.href = base64image;
       link.click();
     }
