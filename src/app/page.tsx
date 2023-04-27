@@ -198,6 +198,37 @@ export default function Home() {
         <div className="space-y-12">
           <div className="border-b border-white/10 pb-12">
             <div className="space-y-8">
+              <div className="space-y-2">
+                <label
+                  htmlFor="cover-photo"
+                  className="block text-sm font-medium leading-6 text-white"
+                >
+                  Imagem
+                </label>
+                <div className="flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10">
+                  <div className="text-center">
+                    <div className="mt-4 flex text-sm leading-6 text-gray-400">
+                      <label
+                        htmlFor="file-upload"
+                        className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
+                      >
+                        <span>Carregue uma imagem</span>
+                        <input
+                          id="file-upload"
+                          name="file-upload"
+                          type="file"
+                          className="sr-only"
+                        />
+                      </label>
+                      <p className="pl-1">ou arraste e solte</p>
+                    </div>
+                    <p className="text-xs leading-5 text-gray-400">
+                      PNG, JPG ou JPEG
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <Input
                 id="title"
                 label="Título"
