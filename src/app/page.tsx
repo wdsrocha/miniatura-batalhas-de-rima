@@ -4,6 +4,8 @@ import thumb from "../../public/images/sample_thumb.jpg";
 import cn from "classnames";
 import localFont from "next/font/local";
 
+import { PhotoIcon } from "@heroicons/react/24/solid";
+
 import { toPng } from "html-to-image";
 import {
   InputHTMLAttributes,
@@ -207,12 +209,17 @@ export default function Home() {
                 </label>
                 <div className="flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10">
                   <div className="text-center">
-                    <div className="mt-4 flex text-sm leading-6 text-gray-400">
+                    <PhotoIcon
+                      className="mx-auto h-12 w-12 text-gray-500"
+                      aria-hidden="true"
+                    />
+
+                    <div className="mt-4 flex flex-col text-sm leading-6 text-gray-400">
                       <label
                         htmlFor="file-upload"
                         className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
                       >
-                        <span>Carregue uma imagem</span>
+                        <span>Adicionar imagem</span>
                         <input
                           id="file-upload"
                           name="file-upload"
@@ -220,11 +227,8 @@ export default function Home() {
                           className="sr-only"
                         />
                       </label>
-                      <p className="pl-1">ou arraste e solte</p>
+                      <p>ou arraste e solte</p>
                     </div>
-                    <p className="text-xs leading-5 text-gray-400">
-                      PNG, JPG ou JPEG
-                    </p>
                   </div>
                 </div>
               </div>
