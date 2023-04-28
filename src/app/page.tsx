@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import thumb from "../../public/images/sample_thumb.jpg";
 import cn from "classnames";
 import localFont from "next/font/local";
 
@@ -8,6 +7,7 @@ import { PhotoIcon } from "@heroicons/react/24/solid";
 
 import { toPng } from "html-to-image";
 import {
+  ChangeEvent,
   InputHTMLAttributes,
   forwardRef,
   useId,
@@ -23,6 +23,7 @@ const higher = localFont({
 type Color = "red" | "green" | "blue" | "yellow";
 
 interface IThumbnail {
+  image?: string;
   title: string;
   color: Color;
 }
@@ -55,13 +56,15 @@ const Thumbnail = forwardRef<HTMLDivElement, IThumbnail>(function Thumbnail(
           "bg-gradient-to-t from-black via-black via-15%"
         )}
       >
-        <Image
-          className="relative -z-10 object-contain"
-          width="640"
-          height="360"
-          src={thumb}
-          alt=""
-        />
+        {props.image ? (
+          <Image
+            className="relative -z-10 object-contain"
+            width="640"
+            height="360"
+            src={props.image}
+            alt=""
+          />
+        ) : null}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap text-7xl font-normal uppercase text-white">
           {tokens.map((token, i) => {
             const key = `${id}${i}`;
@@ -155,6 +158,8 @@ const Select = (props: ISelect) => (
 
 export default function Home() {
   const thumbnailRef = useRef<HTMLDivElement>(null);
+  const [image, setImage] = useState<string | null>(null);
+  const [imageFilename, setImageFilename] = useState("");
   const [title, setTitle] = useState("");
   const [color, setColor] = useState<Color>("red"); // In tailwind token...
 
@@ -185,6 +190,32 @@ export default function Home() {
     }
   };
 
+  const handleFiles = (files: FileList | null) => {
+    if (!files?.length) {
+      return;
+    }
+
+    const file = files[0];
+    const reader = new FileReader();
+
+    setImageFilename(file.name);
+
+    reader.onload = (event) => {
+      setImage(event.target?.result as string);
+    };
+
+    reader.readAsDataURL(file as Blob);
+  };
+
+  const handleImageDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    handleFiles(event.dataTransfer.files);
+  };
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    handleFiles(event.target.files);
+  };
+
   const handleColorChange: InputHTMLAttributes<HTMLSelectElement>["onChange"] =
     (event) => {
       setColor(event.target.value as Color);
@@ -208,23 +239,38 @@ export default function Home() {
                   Imagem
                 </label>
                 <div className="flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10">
-                  <div className="text-center">
-                    <PhotoIcon
-                      className="mx-auto h-12 w-12 text-gray-500"
-                      aria-hidden="true"
-                    />
+                  <div
+                    className="text-center"
+                    onDragOver={(event) => event.preventDefault()}
+                    onDrop={handleImageDrop}
+                  >
+                    {image ? (
+                      <span className="text-sm leading-6 text-gray-400">
+                        {imageFilename}
+                      </span>
+                    ) : (
+                      <PhotoIcon
+                        className="mx-auto h-12 w-12 text-gray-500"
+                        aria-hidden="true"
+                      />
+                    )}
 
                     <div className="mt-4 flex flex-col text-sm leading-6 text-gray-400">
                       <label
                         htmlFor="file-upload"
                         className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
                       >
-                        <span>Adicionar imagem</span>
+                        {image ? (
+                          <span>Trocar imagem</span>
+                        ) : (
+                          <span>Adicionar imagem</span>
+                        )}
                         <input
                           id="file-upload"
                           name="file-upload"
                           type="file"
                           className="sr-only"
+                          onChangeCapture={handleImageChange}
                         />
                       </label>
                       <p>ou arraste e solte</p>
@@ -285,7 +331,12 @@ export default function Home() {
         </div>
       </form>
 
-      <Thumbnail ref={thumbnailRef} title={title} color={color} />
+      <Thumbnail
+        ref={thumbnailRef}
+        image={image || undefined}
+        title={title}
+        color={color}
+      />
 
       {/* <form>
         <div className="space-y-12">
