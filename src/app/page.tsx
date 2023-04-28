@@ -220,6 +220,13 @@ export default function Home() {
       setColor(event.target.value as Color);
     };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.currentTarget.click();
+    }
+  };
+
   return (
     <div className="mx-auto mt-8 sm:mt-16 flex max-w-5xl flex-col items-center justify-around gap-y-8 px-8 lg:flex-row-reverse lg:items-start lg:gap-x-8">
       <Thumbnail
@@ -235,16 +242,20 @@ export default function Home() {
         }}
       >
         <div className="space-y-2">
-          <label
-            htmlFor="image"
-            role="button"
-            aria-controls="file-upload"
-            className="inline-flex items-center gap-x-1.5 rounded-md bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
-          >
-            <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-            Escolher imagem
+          <label htmlFor="image">
+            <span
+              role="button"
+              aria-controls="filename"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+              className="inline-flex items-center gap-x-1.5 rounded-md bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+            >
+              <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+              Escolher imagem
+            </span>
           </label>
           <input
+            tabIndex={-1}
             id="image"
             name="image"
             type="file"
