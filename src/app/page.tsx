@@ -1,6 +1,6 @@
 "use client";
 
-import { PhotoIcon } from "@heroicons/react/24/solid";
+import { ArrowUpTrayIcon, TrashIcon } from "@heroicons/react/24/solid";
 import cn from "classnames";
 import { toPng } from "html-to-image";
 import localFont from "next/font/local";
@@ -31,7 +31,7 @@ const Thumbnail = forwardRef<HTMLDivElement, IThumbnail>(function Thumbnail(
   props: IThumbnail,
   ref
 ) {
-  const title = props.title.toLocaleUpperCase() || "MC 1 X MC 2";
+  const title = props.title.toLocaleUpperCase();
   // TODO: Add "VS" option
   const tokens = title.split(" X ");
   const id = useId();
@@ -162,13 +162,6 @@ export default function Home() {
   const [title, setTitle] = useState("");
   const [color, setColor] = useState<Color>("red"); // In tailwind token...
 
-  const resetForm = () => {
-    setImage(null);
-    setImageFilename("");
-    setTitle("");
-    setColor("red");
-  };
-
   const exportImage = async () => {
     if (thumbnailRef.current) {
       console.log("Exporting image...");
@@ -243,50 +236,46 @@ export default function Home() {
       >
         <div className="space-y-2">
           <label
-            htmlFor="cover-photo"
-            className="block text-sm font-medium leading-6 text-white"
+            htmlFor="image"
+            role="button"
+            aria-controls="file-upload"
+            className="inline-flex items-center gap-x-1.5 rounded-md bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
           >
-            Imagem
+            <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+            Escolher imagem
           </label>
-          <div className="flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10">
-            <div
-              className="text-center"
-              onDragOver={(event) => event.preventDefault()}
-              onDrop={handleImageDrop}
-            >
-              {image ? (
-                <span className="text-sm leading-6 text-gray-400">
-                  {imageFilename}
-                </span>
-              ) : (
-                <PhotoIcon
-                  className="mx-auto h-12 w-12 text-gray-500"
+          <input
+            id="image"
+            name="image"
+            type="file"
+            className="sr-only"
+            onClick={(event) => {
+              // This is a hack to allow the user to select the same file twice
+              // https://stackoverflow.com/a/58527761
+              // @ts-ignore
+              event.target.value = null;
+            }}
+            onChange={handleImageChange}
+          />
+
+          {image && (
+            <div className="flex justify-between items-center">
+              <p className="text-sm leading-6 text-gray-400">{imageFilename}</p>
+              <button
+                type="button"
+                className="inline-flex items-center gap-x-1.5 rounded-md px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+                onClick={() => {
+                  setImage(null);
+                  setImageFilename("");
+                }}
+              >
+                <TrashIcon
+                  className="-ml-0.3 h-3 w-3 text-gray-400"
                   aria-hidden="true"
                 />
-              )}
-
-              <div className="mt-4 flex flex-col text-sm leading-6 text-gray-400">
-                <label
-                  htmlFor="file-upload"
-                  className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
-                >
-                  {image ? (
-                    <span>Trocar imagem</span>
-                  ) : (
-                    <span>Adicionar imagem</span>
-                  )}
-                  <input
-                    id="file-upload"
-                    name="file-upload"
-                    type="file"
-                    className="sr-only"
-                    onChangeCapture={handleImageChange}
-                  />
-                </label>
-                <p>ou arraste e solte</p>
-              </div>
+              </button>
             </div>
-          </div>
+          )}
         </div>
 
         <Input
