@@ -1,160 +1,12 @@
 "use client";
 
+import { Input } from "@/components/Input";
+import { Select } from "@/components/Select";
+import { Color, Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import cn from "classnames";
 import { toPng } from "html-to-image";
-import localFont from "next/font/local";
-import Image from "next/image";
-import {
-  ChangeEvent,
-  InputHTMLAttributes,
-  forwardRef,
-  useId,
-  useRef,
-  useState,
-} from "react";
-
-const higher = localFont({
-  src: "../../public/fonts/Higher.ttf",
-  variable: "--font-higher",
-});
-
-type Color = "red" | "green" | "blue" | "yellow";
-
-interface IThumbnail {
-  image?: string;
-  title: string;
-  color: Color;
-}
-
-const Thumbnail = forwardRef<HTMLDivElement, IThumbnail>(function Thumbnail(
-  props: IThumbnail,
-  ref
-) {
-  const title = props.title.toLocaleUpperCase();
-  // TODO: Add "VS" option
-  const tokens = title.split(" X ");
-  const id = useId();
-
-  const colorVariants: Record<Color, string> = {
-    red: "border-red-500 text-red-500",
-    green: "border-green-500 text-green-500",
-    blue: "border-blue-500 text-blue-500",
-    yellow: "border-yellow-500 text-yellow-500",
-  };
-
-  const color = colorVariants[props.color];
-
-  return (
-    <div className={cn(higher.variable)} ref={ref}>
-      <div
-        className={cn(
-          higher.variable,
-          color,
-          "relative h-[180px] w-[320px] md:h-[360px] md:w-[640px] overflow-hidden border-4",
-          "bg-gradient-to-t from-black via-black via-15%"
-        )}
-      >
-        {props.image ? (
-          <Image
-            className="relative -z-10 object-contain"
-            width="1280"
-            height="720"
-            src={props.image}
-            alt=""
-          />
-        ) : null}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap text-5xl md:text-8xl font-normal uppercase text-white">
-          {tokens.map((token, i) => {
-            const key = `${id}${i}`;
-            // TODO: Find out why this pops the Warning: Each child in a list
-            // should have a nuique "key" prop.
-            if (i) {
-              return (
-                <>
-                  <span key={`${key}:separator`} className={color}>
-                    {" X "}
-                  </span>
-                  <span key={`${key}:token`}>{token}</span>
-                </>
-              );
-            }
-            return <span key={key}>{token}</span>;
-          })}
-        </div>
-      </div>
-    </div>
-  );
-});
-
-interface IInput {
-  id: string;
-  label: string;
-  placeholder?: string;
-  description?: string;
-
-  value: string;
-  onChange: InputHTMLAttributes<HTMLInputElement>["onChange"];
-}
-
-const Input = (props: IInput) => (
-  <div className="space-y-2">
-    <label
-      htmlFor={props.id}
-      className="block text-sm font-medium  leading-6 text-white"
-    >
-      {props.label}
-    </label>
-    <p className="text-sm leading-6 text-gray-400">{props.description}</p>
-    <input
-      type="text"
-      name={props.id}
-      id={props.id}
-      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-      placeholder={props.placeholder}
-      value={props.value}
-      onChange={props.onChange}
-    />
-  </div>
-);
-
-interface IOption {
-  value: string;
-  label: string;
-}
-
-interface ISelect {
-  id: string;
-  label: string;
-  defaultValue?: string;
-  onChange: InputHTMLAttributes<HTMLSelectElement>["onChange"];
-  options: IOption[];
-}
-
-const Select = (props: ISelect) => (
-  <div className="space-y-2">
-    <label
-      htmlFor={props.id}
-      className="block text-sm font-medium leading-6 text-white"
-    >
-      {props.label}
-    </label>
-    <select
-      id={props.id}
-      name={props.id}
-      defaultValue={props.defaultValue}
-      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 [&_*]:text-black"
-      onChange={props.onChange}
-    >
-      {props.options.map((option, key) => (
-        <option key={key} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
-  </div>
-);
+import { InputHTMLAttributes, useRef, useState } from "react";
 
 export default function Home() {
   const thumbnailRef = useRef<HTMLDivElement>(null);
@@ -212,21 +64,10 @@ export default function Home() {
     handleFiles(event.dataTransfer.files);
   };
 
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    handleFiles(event.target.files);
-  };
-
   const handleColorChange: InputHTMLAttributes<HTMLSelectElement>["onChange"] =
     (event) => {
       setColor(event.target.value as Color);
     };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      event.currentTarget.click();
-    }
-  };
 
   return (
     <div className="mx-auto mt-8 sm:mt-16 flex max-w-5xl flex-col items-center justify-around gap-y-8 px-8 lg:flex-row-reverse lg:items-start lg:gap-x-8">
