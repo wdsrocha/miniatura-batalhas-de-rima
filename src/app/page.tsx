@@ -51,7 +51,7 @@ const Thumbnail = forwardRef<HTMLDivElement, IThumbnail>(function Thumbnail(
         className={cn(
           higher.variable,
           color,
-          "relative h-[360px] w-[640px] overflow-hidden border-2",
+          "relative h-[360px] w-[640px] overflow-hidden border-4",
           "bg-gradient-to-t from-black via-black via-15%"
         )}
       >
@@ -64,7 +64,7 @@ const Thumbnail = forwardRef<HTMLDivElement, IThumbnail>(function Thumbnail(
             alt=""
           />
         ) : null}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap text-7xl font-normal uppercase text-white">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap text-8xl font-normal uppercase text-white">
           {tokens.map((token, i) => {
             const key = `${id}${i}`;
             // TODO: Find out why this pops the Warning: Each child in a list
