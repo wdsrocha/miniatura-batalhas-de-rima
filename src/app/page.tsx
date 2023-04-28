@@ -51,20 +51,20 @@ const Thumbnail = forwardRef<HTMLDivElement, IThumbnail>(function Thumbnail(
         className={cn(
           higher.variable,
           color,
-          "relative h-[360px] w-[640px] overflow-hidden border-4",
+          "relative h-[180px] w-[320px] md:h-[360px] md:w-[640px] overflow-hidden border-4",
           "bg-gradient-to-t from-black via-black via-15%"
         )}
       >
         {props.image ? (
           <Image
             className="relative -z-10 object-contain"
-            width="640"
-            height="360"
+            width="1280"
+            height="720"
             src={props.image}
             alt=""
           />
         ) : null}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap text-8xl font-normal uppercase text-white">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap text-5xl md:text-8xl font-normal uppercase text-white">
           {tokens.map((token, i) => {
             const key = `${id}${i}`;
             // TODO: Find out why this pops the Warning: Each child in a list
@@ -228,7 +228,7 @@ export default function Home() {
     };
 
   return (
-    <div className="mx-auto mt-16 flex max-w-5xl flex-col items-center justify-around gap-y-8 px-8 lg:flex-row-reverse lg:items-start lg:gap-x-8">
+    <div className="mx-auto mt-8 sm:mt-16 flex max-w-5xl flex-col items-center justify-around gap-y-8 px-8 lg:flex-row-reverse lg:items-start lg:gap-x-8">
       <Thumbnail
         ref={thumbnailRef}
         image={image || undefined}
