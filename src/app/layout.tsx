@@ -1,7 +1,8 @@
 import "./globals.css";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Miniatura de Vídeo | Batalha de Rima",
+export const metadata: Metadata = {
+  title: "Miniatura de Vídeo para Batalhas de Rima",
   description:
     "Gere uma miniatura de vídeo para sua Batalha de Rima no YouTube",
 };
@@ -12,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="pt" className="dark">
       <body className="dark:bg-gray-900">{children}</body>
     </html>
   );
