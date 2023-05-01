@@ -2,20 +2,25 @@
 
 import { Input } from "@/components/Input";
 import { Main } from "@/components/Main";
+import { Modal } from "@/components/Modal";
 import { Navbar } from "@/components/Navbar";
 import { Select } from "@/components/Select";
 import { Color, Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { getCroppedImg } from "@/lib/cropImage";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { toPng } from "html-to-image";
-import { InputHTMLAttributes, useRef, useState } from "react";
+import { InputHTMLAttributes, useCallback, useRef, useState } from "react";
+import { Area } from "react-easy-crop";
 
-export default function Home() {
+export default function EditorPage() {
   const thumbnailRef = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState<string | null>(null);
   const [imageFilename, setImageFilename] = useState("");
   const [title, setTitle] = useState("");
   const [color, setColor] = useState<Color>("red"); // In tailwind token...
+  const [showCropper, setShowCropper] = useState(false);
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
   const exportImage = async () => {
     if (thumbnailRef.current) {
@@ -59,6 +64,8 @@ export default function Home() {
     };
 
     reader.readAsDataURL(file as Blob);
+
+    setShowCropper(true);
   };
 
   const handleImageDrop = (event: React.DragEvent<HTMLDivElement>) => {
@@ -75,11 +82,17 @@ export default function Home() {
     <>
       <Navbar path="editor" />
       <Main>
+        <Modal
+          open={showCropper}
+          setOpen={setShowCropper}
+          image={image!}
+          onSave={(croppedImage) => setCroppedImage(croppedImage)}
+        />
         <div className="flex flex-col items-center justify-around gap-y-8 lg:flex-row-reverse lg:items-start lg:gap-x-8">
           {image && (
             <Thumbnail
               ref={thumbnailRef}
-              image={image || undefined}
+              image={croppedImage || undefined}
               title={title}
               color={color}
             />
@@ -95,19 +108,32 @@ export default function Home() {
 
               {imageFilename && (
                 <div className="flex justify-start items-center">
-                  <p className="text-sm leading-6 text-gray-400">
+                  <p className="text-sm leading-6 text-gray-400 mr-1.5">
                     {imageFilename}
                   </p>
                   <button
                     type="button"
-                    className="inline-flex items-center gap-x-1.5 rounded-md mx-1 px-1.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+                    className="inline-flex items-center rounded-md px-1.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+                    onClick={() => {
+                      setShowCropper(true);
+                    }}
+                  >
+                    <PencilIcon
+                      className="-ml-0.4 h-4 w-4 text-gray-400"
+                      aria-hidden="true"
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex items-center rounded-md px-1.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
                     onClick={() => {
                       setImage(null);
+                      setCroppedImage(null);
                       setImageFilename("");
                     }}
                   >
                     <TrashIcon
-                      className="-ml-0.3 h-3 w-3 text-gray-400"
+                      className="-ml-0.4 h-4 w-4 text-gray-400"
                       aria-hidden="true"
                     />
                   </button>
