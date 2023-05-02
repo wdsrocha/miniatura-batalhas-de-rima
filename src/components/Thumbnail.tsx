@@ -8,7 +8,7 @@ export type Color = "red" | "green" | "blue" | "yellow";
 interface Props {
   image?: string;
   title: string;
-  color: Color;
+  color: string;
 }
 
 const higher = localFont({
@@ -25,21 +25,12 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
   const tokens = title.split(" X ");
   const id = useId();
 
-  const colorVariants: Record<Color, string> = {
-    red: "border-red-500 text-red-500",
-    green: "border-green-500 text-green-500",
-    blue: "border-blue-500 text-blue-500",
-    yellow: "border-yellow-500 text-yellow-500",
-  };
-
-  const color = colorVariants[props.color];
-
   return (
     <div className={cn(higher.variable)} ref={ref}>
       <div
+        style={{ borderColor: props.color }}
         className={cn(
           higher.variable,
-          color,
           "relative h-[180px] w-[320px] md:h-[360px] md:w-[640px] overflow-hidden border-4",
           "bg-gradient-to-t from-black via-black via-15%"
         )}
@@ -61,7 +52,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
             if (i) {
               return (
                 <>
-                  <span key={`${key}:separator`} className={color}>
+                  <span key={`${key}:separator`} style={{ color: props.color }}>
                     {" X "}
                   </span>
                   <span key={`${key}:token`}>{token}</span>

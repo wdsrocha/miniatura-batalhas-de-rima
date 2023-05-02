@@ -65,7 +65,6 @@ export async function getCroppedImg(
 
   // croppedAreaPixels values are bounding box relative
   // extract the cropped image using these values
-  console.log({ pixelCrop });
   const data = ctx.getImageData(
     pixelCrop.x,
     pixelCrop.y,

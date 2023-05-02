@@ -1,24 +1,22 @@
 "use client";
 
+import { COLORS, ColorPicker } from "@/components/ColorPicker";
 import { Input } from "@/components/Input";
 import { Main } from "@/components/Main";
 import { Modal } from "@/components/Modal";
 import { Navbar } from "@/components/Navbar";
-import { Select } from "@/components/Select";
 import { Color, Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
-import { getCroppedImg } from "@/lib/cropImage";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { toPng } from "html-to-image";
 import { InputHTMLAttributes, useCallback, useRef, useState } from "react";
-import { Area } from "react-easy-crop";
 
 export default function EditorPage() {
   const thumbnailRef = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState<string | null>(null);
   const [imageFilename, setImageFilename] = useState("");
   const [title, setTitle] = useState("");
-  const [color, setColor] = useState<Color>("red"); // In tailwind token...
+  const [color, setColor] = useState(COLORS[0].value);
   const [showCropper, setShowCropper] = useState(false);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
@@ -72,11 +70,6 @@ export default function EditorPage() {
     event.preventDefault();
     handleFiles(event.dataTransfer.files);
   };
-
-  const handleColorChange: InputHTMLAttributes<HTMLSelectElement>["onChange"] =
-    (event) => {
-      setColor(event.target.value as Color);
-    };
 
   return (
     <>
@@ -149,30 +142,7 @@ export default function EditorPage() {
               onChange={(event) => setTitle(event.target.value)}
             />
 
-            <Select
-              id="color"
-              label="Cor Primária"
-              defaultValue="red"
-              onChange={handleColorChange}
-              options={[
-                {
-                  value: "red",
-                  label: "Vermelho (#ef4444)",
-                },
-                {
-                  value: "green",
-                  label: "Verde (#22c55e)",
-                },
-                {
-                  value: "blue",
-                  label: "Azul (#3b82f6)",
-                },
-                {
-                  value: "yellow",
-                  label: "Amarelo (#f59e0b)",
-                },
-              ]}
-            />
+            <ColorPicker value={color} onChange={setColor} />
 
             <hr className="border-white/10" />
 

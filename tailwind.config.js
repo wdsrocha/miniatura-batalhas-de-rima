@@ -7,6 +7,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        // Colors used on thumbnails
+        Vermelho: "#fb192a",
+        Rosa: "#fd04e9",
+        Azul: "#0800e9",
+        Ciano: "#1df3f1",
+        Verde: "#28e428",
+        Amarelo: "#fef726",
+      },
       fontFamily: {
         normal: ["var(--font-higher)"],
         mono: ["var(--font-higher)"],
