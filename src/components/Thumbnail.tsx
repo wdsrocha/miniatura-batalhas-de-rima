@@ -32,7 +32,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
         className={cn(
           higher.variable,
           "relative h-[180px] w-[320px] md:h-[360px] md:w-[640px] overflow-hidden border-4",
-          "bg-gradient-to-t from-black via-black via-15%"
+          "bg-gradient-to-t from-black via-black/90 via-23% to-transparent to-40%"
         )}
       >
         {props.image ? (
