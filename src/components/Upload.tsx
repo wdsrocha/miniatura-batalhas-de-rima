@@ -36,6 +36,7 @@ export const Upload = (props: Props) => {
         id="image"
         name="image"
         type="file"
+        accept="image/*"
         className="sr-only"
         onClick={(event) => {
           // This is a hack to allow the user to select the same file twice
