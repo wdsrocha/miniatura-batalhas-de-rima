@@ -73,6 +73,16 @@ export default function AboutPage() {
             alteração de fontes, entre outros. Dependendo do interesse da
             comunidade, posso evoluir as funcionalidades.
           </p>
+          <p>
+            Entre em contato via e-mail (
+            <a href="mailto:hi@wdsrocha.com">hi@wdsrocha.com</a>) ou Instagram (
+            <a href="https://instagram.com/sharp.freestyle">@sharp.freestyle</a>
+            ). Caso seja um programador, o código deste site está disponível no{" "}
+            <a href="https://github.com/wdsrocha/miniatura-batalhas-de-rima">
+              GitHub
+            </a>
+            .
+          </p>
         </article>
       </Main>
     </>
