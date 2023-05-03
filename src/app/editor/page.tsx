@@ -9,7 +9,7 @@ import { Color, Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { toPng } from "html-to-image";
-import { InputHTMLAttributes, useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export default function EditorPage() {
   const thumbnailRef = useRef<HTMLDivElement>(null);
@@ -100,8 +100,8 @@ export default function EditorPage() {
               <Upload handleFiles={handleFiles} />
 
               {imageFilename && (
-                <div className="flex justify-start items-center">
-                  <p className="text-sm leading-6 text-gray-400 mr-1.5">
+                <div className="flex items-center justify-start">
+                  <p className="mr-1.5 text-sm leading-6 text-gray-400">
                     {imageFilename}
                   </p>
                   <button
@@ -112,7 +112,7 @@ export default function EditorPage() {
                     }}
                   >
                     <PencilIcon
-                      className="-ml-0.4 h-4 w-4 text-gray-400"
+                      className="-ml-0.4 h-4 w-4 text-gray-400 "
                       aria-hidden="true"
                     />
                   </button>

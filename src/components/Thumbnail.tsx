@@ -31,8 +31,8 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
         style={{ borderColor: props.color }}
         className={cn(
           higher.variable,
-          "relative h-[180px] w-[320px] md:h-[360px] md:w-[640px] overflow-hidden border-4",
-          "bg-gradient-to-t from-black via-black/90 via-23% to-transparent to-40%"
+          "relative h-[180px] w-[320px] overflow-hidden border-4 md:h-[360px] md:w-[640px]",
+          "via-23% bg-gradient-to-t from-black via-black/90 to-transparent to-40%"
         )}
       >
         {props.image ? (
@@ -44,7 +44,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
             alt=""
           />
         ) : null}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap text-5xl md:text-8xl font-normal uppercase text-white">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap text-5xl font-normal uppercase text-white md:text-8xl">
           {tokens.map((token, i) => {
             const key = `${id}${i}`;
             // TODO: Find out why this pops the Warning: Each child in a list

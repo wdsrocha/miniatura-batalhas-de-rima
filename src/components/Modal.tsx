@@ -46,7 +46,7 @@ export const Modal = (props: Props) => {
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full h-full items-end justify-center border-blue-500 border-4 p-4 text-center sm:items-center">
+          <div className="flex h-full min-h-full items-end justify-center border-4 border-blue-500 p-4 text-center sm:items-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -56,15 +56,15 @@ export const Modal = (props: Props) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="w-full space-y-4 sm:space-y-6 flex flex-col relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6 h-full">
+              <Dialog.Panel className="relative flex h-full w-full transform flex-col space-y-4 overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:space-y-6 sm:p-6">
                 <Dialog.Title
                   as="h3"
-                  className="grow-0 text-base sm:text-xl font-semibold leading-6 text-gray-900 text-center"
+                  className="grow-0 text-center text-base font-semibold leading-6 text-gray-900 sm:text-xl"
                 >
                   Recortar
                 </Dialog.Title>
-                <div className="grow -mx-4 sm:-mx-6">
-                  <div className="relative top-0 left-0 right-0 bottom-0 h-full">
+                <div className="-mx-4 grow sm:-mx-6">
+                  <div className="relative bottom-0 left-0 right-0 top-0 h-full">
                     <Cropper
                       image={props.image!}
                       crop={crop}
@@ -78,7 +78,7 @@ export const Modal = (props: Props) => {
                 </div>
                 <button
                   type="button"
-                  className="grow-0 inline-flex w-full md:w-64 md:mx-auto justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="inline-flex w-full grow-0 justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 md:mx-auto md:w-64"
                   onClick={saveAndClose}
                 >
                   Salvar

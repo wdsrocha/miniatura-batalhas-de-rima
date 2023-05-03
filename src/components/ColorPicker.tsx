@@ -16,7 +16,7 @@ const ColorButton = ({
       style={{ backgroundColor: color, outlineColor: color }}
       onClick={() => onClick?.(color)}
       className={cn(
-        "inline-flex border-0 h-8 w-8 items-center rounded-md shadow-sm",
+        "inline-flex h-8 w-8 items-center rounded-md border-0 shadow-sm",
         "hover:brightness-125",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:brightness-125"
       )}

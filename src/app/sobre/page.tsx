@@ -10,7 +10,7 @@ export default function AboutPage() {
     <>
       <Navbar path="sobre"></Navbar>
       <Main>
-        <article className="prose prose-lg md:prose-xl dark:prose-invert prose-img:mx-auto">
+        <article className="prose prose-lg dark:prose-invert md:prose-xl prose-img:mx-auto">
           <h1>Miniatura de Vídeo para Batalhas de Rima</h1>
           <p>
             Todas as semanas centenas de batalhas de rima acontecem no Brasil e
