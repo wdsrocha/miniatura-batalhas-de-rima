@@ -7,7 +7,11 @@ import { Modal } from "@/components/Modal";
 import { Navbar } from "@/components/Navbar";
 import { Color, Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import {
+  ExclamationTriangleIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/react/24/solid";
 import { toPng } from "html-to-image";
 import { useRef, useState } from "react";
 
@@ -71,6 +75,20 @@ export default function EditorPage() {
     handleFiles(event.dataTransfer.files);
   };
 
+  if (!image) {
+    return (
+      <>
+        <Navbar path="editor" />
+        <Main>
+          <Upload
+            handleFiles={handleFiles}
+            label="Escolha uma imagem para começar"
+          />
+        </Main>
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar path="editor" />
@@ -78,18 +96,16 @@ export default function EditorPage() {
         <Modal
           open={showCropper}
           setOpen={setShowCropper}
-          image={image!}
+          image={image}
           onSave={(croppedImage) => setCroppedImage(croppedImage)}
         />
         <div className="flex flex-col items-center justify-around gap-y-8 lg:flex-row-reverse lg:items-start lg:gap-x-8">
-          {image && (
-            <Thumbnail
-              ref={thumbnailRef}
-              image={croppedImage || undefined}
-              title={title}
-              color={color}
-            />
-          )}
+          <Thumbnail
+            ref={thumbnailRef}
+            image={croppedImage || undefined}
+            title={title}
+            color={color}
+          />
           <form
             className="w-full space-y-8"
             onSubmit={(event) => {
@@ -97,7 +113,7 @@ export default function EditorPage() {
             }}
           >
             <div className="space-y-2">
-              <Upload handleFiles={handleFiles} />
+              <Upload handleFiles={handleFiles} label="Trocar imagem" />
 
               {imageFilename && (
                 <div className="flex items-center justify-start">

@@ -2,6 +2,7 @@ import { ArrowUpTrayIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { ChangeEvent } from "react";
 
 interface Props {
+  label: string;
   handleFiles: (files: FileList | null) => void;
 }
 
@@ -28,7 +29,7 @@ export const Upload = (props: Props) => {
           className="inline-flex items-center gap-x-1.5 rounded-md bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
         >
           <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-          Escolher imagem
+          {props.label}
         </span>
       </label>
       <input
