@@ -1,4 +1,6 @@
+import { Font, fonts } from "@/lib/fonts";
 import cn from "classnames";
+import { NextFontWithVariable } from "next/dist/compiled/@next/font";
 import localFont from "next/font/local";
 import Image from "next/image";
 import { forwardRef, useId } from "react";
@@ -9,12 +11,8 @@ interface Props {
   image?: string;
   title: string;
   color: string;
+  fontName: string;
 }
-
-const higher = localFont({
-  src: "../../public/fonts/Higher.ttf",
-  variable: "--font-higher",
-});
 
 export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
   props: Props,
@@ -25,12 +23,15 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
   const tokens = title.split(" X ");
   const id = useId();
 
+  const font = fonts[props.fontName];
+
+  console.log({ font });
+
   return (
-    <div className={cn(higher.variable)} ref={ref}>
+    <div ref={ref}>
       <div
         style={{ borderColor: props.color }}
         className={cn(
-          higher.variable,
           "relative h-[180px] w-[320px] overflow-hidden border-4 md:h-[360px] md:w-[640px]",
           "via-23% bg-gradient-to-t from-black via-black/90 to-transparent to-40%"
         )}
@@ -44,7 +45,13 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
             alt=""
           />
         ) : null}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap text-5xl font-normal uppercase text-white md:text-8xl">
+        <div
+          className={cn(
+            font.baseTokens,
+            font.sizeTokens,
+            "absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap uppercase text-white"
+          )}
+        >
           {tokens.map((token, i) => {
             const key = `${id}${i}`;
             // TODO: Find out why this pops the Warning: Each child in a list

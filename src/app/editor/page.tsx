@@ -1,12 +1,14 @@
 "use client";
 
 import { COLORS, ColorPicker } from "@/components/ColorPicker";
+import { FontPicker } from "@/components/FontPicker";
 import { Input } from "@/components/Input";
 import { Main } from "@/components/Main";
 import { Modal } from "@/components/Modal";
 import { Navbar } from "@/components/Navbar";
 import { Color, Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
+import { fonts } from "@/lib/fonts";
 import {
   ExclamationTriangleIcon,
   PencilIcon,
@@ -21,6 +23,7 @@ export default function EditorPage() {
   const [imageFilename, setImageFilename] = useState("");
   const [title, setTitle] = useState("");
   const [color, setColor] = useState(COLORS[0].value);
+  const [selectedFont, setSelectedFont] = useState(Object.keys(fonts)[0]);
   const [showCropper, setShowCropper] = useState(false);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
@@ -104,6 +107,7 @@ export default function EditorPage() {
             ref={thumbnailRef}
             image={croppedImage || undefined}
             title={title}
+            fontName={selectedFont}
             color={color}
           />
           <form
@@ -156,6 +160,11 @@ export default function EditorPage() {
               placeholder="Emicida X Negra Re"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
+            />
+
+            <FontPicker
+              onChange={setSelectedFont}
+              sample={title || "Emicida X Negra Re"}
             />
 
             <ColorPicker value={color} onChange={setColor} />

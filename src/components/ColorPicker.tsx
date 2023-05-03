@@ -1,32 +1,6 @@
 import { RadioGroup } from "@headlessui/react";
 import cn from "classnames";
 
-const ColorButton = ({
-  color,
-  onClick,
-}: {
-  color: string;
-  onClick?: (color: string) => void;
-}) => (
-  <div>
-    <input
-      type="radio"
-      id={color}
-      value={color}
-      style={{ backgroundColor: color, outlineColor: color }}
-      onClick={() => onClick?.(color)}
-      className={cn(
-        "inline-flex h-8 w-8 items-center rounded-md border-0 shadow-sm",
-        "hover:brightness-125",
-        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:brightness-125"
-      )}
-    />
-    <label htmlFor={color} className="sr-only">
-      {color}
-    </label>
-  </div>
-);
-
 interface Props {
   value: string | null;
   onChange?: (color: string) => void;
