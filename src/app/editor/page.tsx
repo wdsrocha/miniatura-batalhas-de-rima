@@ -6,8 +6,8 @@ import { Input } from "@/components/Input";
 import { Main } from "@/components/Main";
 import { Modal } from "@/components/Modal";
 import { Navbar } from "@/components/Navbar";
-import { SuccessNotification } from "@/components/SuccessNotification";
-import { Color, Thumbnail } from "@/components/Thumbnail";
+import { SuccessToast } from "@/components/SuccessToast";
+import { Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
 import { fonts } from "@/lib/fonts";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
@@ -177,10 +177,7 @@ export default function EditorPage() {
         image={image}
         onSave={(croppedImage) => setCroppedImage(croppedImage)}
       />
-      <SuccessNotification
-        show={showSuccessModal}
-        setShow={setShowSuccessModal}
-      />
+      <SuccessToast show={showSuccessModal} setShow={setShowSuccessModal} />
     </>
   );
 }
