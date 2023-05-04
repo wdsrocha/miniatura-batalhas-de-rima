@@ -12,7 +12,13 @@ export const Navbar = (props: { path: string }) => (
   <nav className="bg-gray-800">
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="relative flex h-16 items-center justify-start gap-x-6">
-        <Image className="h-8 w-auto" src={logo} alt='Emoji "Rolo de Filmes"' />
+        <Link href="/">
+          <Image
+            className="h-8 w-auto"
+            src={logo}
+            alt='Emoji "Rolo de Filmes"'
+          />
+        </Link>
         <div className="flex space-x-4">
           {navigation.map((item) => {
             const current = props.path === item.href.substring(1);

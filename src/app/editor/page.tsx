@@ -73,10 +73,12 @@ export default function EditorPage() {
       <>
         <Navbar path="editor" />
         <Main>
-          <Upload
-            handleFiles={handleFiles}
-            label="Escolha uma imagem para começar"
-          />
+          <div className="flex items-center justify-center">
+            <Upload
+              handleFiles={handleFiles}
+              label="Escolha uma imagem para começar"
+            />
+          </div>
         </Main>
       </>
     );
