@@ -45,7 +45,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
           className={cn(
             font.baseTokens,
             font.sizeTokens,
-            "absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap uppercase text-white"
+            "absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap uppercase text-white"
           )}
         >
           {tokens.map((token, i) => {

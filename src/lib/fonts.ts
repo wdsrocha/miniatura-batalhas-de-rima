@@ -38,34 +38,35 @@ const headlinerFont = localFont({
 });
 
 export const fonts: Record<string, Font> = {
-  pineforest: {
-    label: "Pineforest",
-    baseTokens: cn(pineforestFont.className, pineforestFont.variable),
-    sizeTokens: "text-8xl",
+  delirium: {
+    label: "delirium",
+    baseTokens: cn(deliriumFont.className, deliriumFont.variable),
+    sizeTokens: "text-5xl md:text-8xl",
+  },
+
+  headliner: {
+    label: "headliner",
+    baseTokens: cn(headlinerFont.className, headlinerFont.variable),
+    sizeTokens: "text-5xl md:text-8xl",
   },
   yulong: {
     label: "Yulong",
     baseTokens: cn(yulongFont.className, yulongFont.variable),
-    sizeTokens: "text-8xl tracking-tighter",
+    sizeTokens: "text-5xl mb-1 md:text-8xl md:mb-2 tracking-tight",
   },
   blocky: {
     label: "Blocky",
     baseTokens: cn(blockyFont.className, blockyFont.variable),
-    sizeTokens: "text-8xl",
+    sizeTokens: "text-5xl mb-1 md:text-8xl md:mb-2",
   },
   brookline: {
     label: "brookline",
     baseTokens: cn(brooklineFont.className, brooklineFont.variable),
-    sizeTokens: "text-7xl tracking-tighter",
+    sizeTokens: "text-4xl md:text-7xl md:mb-2 tracking-tight",
   },
-  delirium: {
-    label: "delirium",
-    baseTokens: cn(deliriumFont.className, deliriumFont.variable),
-    sizeTokens: "text-8xl",
-  },
-  headliner: {
-    label: "headliner",
-    baseTokens: cn(headlinerFont.className, headlinerFont.variable),
-    sizeTokens: "text-8xl",
+  pineforest: {
+    label: "Pineforest",
+    baseTokens: cn(pineforestFont.className, pineforestFont.variable),
+    sizeTokens: "text-5xl mb-1.5 md:text-8xl md:mb-3",
   },
 };
