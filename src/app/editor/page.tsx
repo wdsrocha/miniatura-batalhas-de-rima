@@ -10,6 +10,7 @@ import { Color, Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
 import { fonts } from "@/lib/fonts";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import cn from "classnames";
 import { toPng } from "html-to-image";
 import { useRef, useState } from "react";
 
@@ -116,13 +117,16 @@ export default function EditorPage() {
               <Upload handleFiles={handleFiles} label="Trocar imagem" />
 
               {imageFilename && (
-                <div className="flex items-center justify-start">
-                  <p className="mr-1.5 text-sm leading-6 text-gray-400">
+                <div className="flex items-center justify-start space-x-2">
+                  <p className="text-sm leading-6 text-gray-400">
                     {imageFilename}
                   </p>
                   <button
                     type="button"
-                    className="inline-flex items-center rounded-md px-1.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+                    className={cn(
+                      "inline-flex items-center rounded-md px-1 py-1 text-sm font-semibold text-white shadow-sm hover:bg-white/20",
+                      "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                    )}
                     onClick={() => {
                       setShowCropper(true);
                     }}
@@ -134,7 +138,10 @@ export default function EditorPage() {
                   </button>
                   <button
                     type="button"
-                    className="inline-flex items-center rounded-md px-1.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+                    className={cn(
+                      "inline-flex items-center rounded-md px-1 py-1 text-sm font-semibold text-white shadow-sm hover:bg-white/20",
+                      "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                    )}
                     onClick={() => {
                       setImage(null);
                       setCroppedImage(null);
