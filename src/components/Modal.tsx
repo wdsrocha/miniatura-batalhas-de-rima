@@ -46,7 +46,7 @@ export const Modal = (props: Props) => {
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex h-full min-h-full items-end justify-center border-4 border-blue-500 p-4 text-center sm:items-center">
+          <div className="flex h-full min-h-full items-end justify-center border-4 border-blue-500 px-4 py-32 text-center sm:items-center sm:py-4">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -56,10 +56,10 @@ export const Modal = (props: Props) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative flex h-full w-full transform flex-col space-y-4 overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:space-y-6 sm:p-6">
+              <Dialog.Panel className="relative flex h-full w-full transform flex-col space-y-4 overflow-hidden rounded-lg bg-gray-800 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:space-y-6 sm:p-6">
                 <Dialog.Title
                   as="h3"
-                  className="grow-0 text-center text-base font-semibold leading-6 text-gray-900 sm:text-xl"
+                  className="grow-0 text-center text-base font-semibold leading-6 text-white sm:text-xl"
                 >
                   Recortar
                 </Dialog.Title>
