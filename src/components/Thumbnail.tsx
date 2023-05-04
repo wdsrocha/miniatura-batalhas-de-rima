@@ -1,7 +1,5 @@
-import { Font, fonts } from "@/lib/fonts";
+import { fonts } from "@/lib/fonts";
 import cn from "classnames";
-import { NextFontWithVariable } from "next/dist/compiled/@next/font";
-import localFont from "next/font/local";
 import Image from "next/image";
 import { forwardRef, useId } from "react";
 
@@ -24,8 +22,6 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
   const id = useId();
 
   const font = fonts[props.fontName];
-
-  console.log({ font });
 
   return (
     <div ref={ref}>

@@ -1,49 +1,71 @@
 import cn from "classnames";
 import localFont from "next/font/local";
 
-const higherFont = localFont({
-  src: "../../public/fonts/Higher.ttf",
-  variable: "--font-higher",
-});
-
-const droneRangerFont = localFont({
-  src: "../../public/fonts/drone-ranger-pro-bold.ttf",
-  variable: "--font-drone-ranger",
-});
-
-const freezerBtnFont = localFont({
-  src: "../../public/fonts/freezer-btn-regular.ttf",
-  variable: "--font-freezer-btn",
-});
-
 export type Font = {
   label: string;
   baseTokens: string;
   sizeTokens: string;
 };
 
+const pineforestFont = localFont({
+  src: "../../public/fonts/pineforest.ttf",
+  variable: "--font-pineforest",
+});
+
+const yulongFont = localFont({
+  src: "../../public/fonts/yulong.ttf",
+  variable: "--font-yulong",
+});
+
+const blockyFont = localFont({
+  src: "../../public/fonts/blocky.ttf",
+  variable: "--font-blocky",
+});
+
+const brooklineFont = localFont({
+  src: "../../public/fonts/brookline.ttf",
+  variable: "--font-brookline",
+});
+
+const deliriumFont = localFont({
+  src: "../../public/fonts/delirium.ttf",
+  variable: "--font-delirium",
+});
+
+const headlinerFont = localFont({
+  src: "../../public/fonts/headliner.ttf",
+  variable: "--font-headliner",
+});
+
 export const fonts: Record<string, Font> = {
-  higher: {
-    label: "Higher",
-    baseTokens: cn(higherFont.className, higherFont.variable, "tracking-wide"),
-    sizeTokens: "text-5xl md:text-8xl -mb-4",
+  pineforest: {
+    label: "Pineforest",
+    baseTokens: cn(pineforestFont.className, pineforestFont.variable),
+    sizeTokens: "text-8xl",
   },
-  droneRanger: {
-    label: "Drone Ranger",
-    baseTokens: cn(
-      droneRangerFont.className,
-      droneRangerFont.variable,
-      "tracking-tight"
-    ),
-    sizeTokens: "text-2xl md:text-5xl",
+  yulong: {
+    label: "Yulong",
+    baseTokens: cn(yulongFont.className, yulongFont.variable),
+    sizeTokens: "text-8xl tracking-tighter",
   },
-  freezerBtn: {
-    label: "Freezer BTN",
-    baseTokens: cn(
-      freezerBtnFont.className,
-      freezerBtnFont.variable,
-      "tracking-tight"
-    ),
-    sizeTokens: "text-5xl",
+  blocky: {
+    label: "Blocky",
+    baseTokens: cn(blockyFont.className, blockyFont.variable),
+    sizeTokens: "text-8xl",
+  },
+  brookline: {
+    label: "brookline",
+    baseTokens: cn(brooklineFont.className, brooklineFont.variable),
+    sizeTokens: "text-7xl tracking-tighter",
+  },
+  delirium: {
+    label: "delirium",
+    baseTokens: cn(deliriumFont.className, deliriumFont.variable),
+    sizeTokens: "text-8xl",
+  },
+  headliner: {
+    label: "headliner",
+    baseTokens: cn(headlinerFont.className, headlinerFont.variable),
+    sizeTokens: "text-8xl",
   },
 };

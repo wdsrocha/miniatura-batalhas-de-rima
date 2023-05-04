@@ -12,12 +12,6 @@ module.exports = {
         Verde: "#28e428",
         Amarelo: "#fef726",
       },
-      fontFamily: {
-        normal: ["var(--font-drone-ranger)"],
-        mono: ["var(--font-higher-btn)"],
-        freezerBtn: ["var(--font-freezer-btn)"],
-        droneRanger: ["var(--font-drone-ranger)"],
-      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
