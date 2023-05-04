@@ -23,7 +23,7 @@ export const ColorPicker = (props: Props) => {
       className="space-y-2"
     >
       <RadioGroup.Label className="block text-sm font-medium leading-6 text-white">
-        Cor Primária
+        Cor
       </RadioGroup.Label>
       <div className="flex flex-wrap gap-2">
         {COLORS.map((color) => (
@@ -33,9 +33,10 @@ export const ColorPicker = (props: Props) => {
             className={({ active, checked }) =>
               cn(
                 color.ring,
-                active && checked ? "ring" : "",
-                !active && checked ? "ring-2" : "",
-                "relative flex cursor-pointer items-center justify-center rounded-md p-0.5 focus:outline-none"
+                checked && active ? "ring" : "",
+                checked && !active ? "ring-2" : "",
+                "relative flex items-center justify-center",
+                "cursor-pointer rounded-md p-0.5 hover:brightness-150 focus:outline-none"
               )
             }
           >
@@ -47,9 +48,7 @@ export const ColorPicker = (props: Props) => {
               style={{
                 backgroundColor: color.value,
               }}
-              className={cn(
-                "h-8 w-8 rounded-md border border-black border-opacity-10"
-              )}
+              className="h-8 w-8 rounded"
             />
           </RadioGroup.Option>
         ))}

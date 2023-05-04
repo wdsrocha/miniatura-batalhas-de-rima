@@ -1,40 +1,58 @@
 import { fonts } from "@/lib/fonts";
+import { RadioGroup } from "@headlessui/react";
 import cn from "classnames";
 
 interface Props {
-  sample: string;
+  selectedFont: string;
   onChange?: (font: string) => void;
 }
 
 export const FontPicker = (props: Props) => {
   return (
-    <fieldset className="space-y-2">
-      <legend className="block text-sm font-medium leading-6 text-white">
+    <RadioGroup
+      value={props.selectedFont}
+      onChange={props.onChange}
+      className="space-y-2"
+    >
+      <RadioGroup.Label className="block text-sm font-medium leading-6 text-white">
         Fonte
-      </legend>
-      <div className="space-y-4">
+      </RadioGroup.Label>
+      <div className="flex flex-wrap gap-2">
         {Object.entries(fonts).map(([name, font]) => (
-          <div key={name} className="flex items-center space-x-3">
-            <input
-              type="radio"
-              id={name}
-              name="font"
-              defaultChecked={name === "higher"}
-              className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-              onChange={() => props.onChange?.(name)}
-            />
-            <label
-              htmlFor={name}
+          <RadioGroup.Option
+            key={name}
+            value={name}
+            className={({ active, checked }) =>
+              cn(
+                checked && active ? "ring " : "",
+                checked && !active ? "ring-2 " : "",
+                checked || active
+                  ? "bg-indigo-600 hover:bg-indigo-500 "
+                  : "bg-white/10 hover:bg-white/20",
+                "flex flex-wrap items-center justify-center",
+                "h-8 w-28 cursor-pointer rounded-md ring-indigo-600 hover:ring-indigo-500 focus:outline-none"
+              )
+            }
+          >
+            <div
               className={cn(
-                font.baseTokens,
-                "block text-xl leading-6 tracking-wider text-white"
+                "flex items-center justify-center",
+                "h-full w-full rounded-md border-2 border-gray-900"
               )}
             >
-              {font.label}
-            </label>
-          </div>
+              <RadioGroup.Label
+                as="span"
+                className={cn(
+                  font.baseTokens,
+                  "rounded text-sm font-semibold uppercase tracking-wider text-white"
+                )}
+              >
+                {font.label}
+              </RadioGroup.Label>
+            </div>
+          </RadioGroup.Option>
         ))}
       </div>
-    </fieldset>
+    </RadioGroup>
   );
 };

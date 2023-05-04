@@ -9,11 +9,7 @@ import { Navbar } from "@/components/Navbar";
 import { Color, Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
 import { fonts } from "@/lib/fonts";
-import {
-  ExclamationTriangleIcon,
-  PencilIcon,
-  TrashIcon,
-} from "@heroicons/react/24/solid";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { toPng } from "html-to-image";
 import { useRef, useState } from "react";
 
@@ -163,8 +159,8 @@ export default function EditorPage() {
             />
 
             <FontPicker
+              selectedFont={selectedFont}
               onChange={setSelectedFont}
-              sample={title || "Emicida X Negra Re"}
             />
 
             <ColorPicker value={color} onChange={setColor} />
