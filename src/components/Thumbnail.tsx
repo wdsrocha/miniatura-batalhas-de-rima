@@ -16,9 +16,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
   props: Props,
   ref
 ) {
-  const title = props.title.toLocaleUpperCase();
-  // TODO: Add "VS" option
-  const tokens = title.split(" X ");
+  const tokens = props.title.toLocaleUpperCase().split(" ");
   const id = useId();
 
   const font = fonts[props.fontName];
@@ -45,24 +43,26 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
           className={cn(
             font.baseTokens,
             font.sizeTokens,
-            "absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap uppercase text-white"
+            "absolute bottom-0 left-1/2 flex -translate-x-1/2 items-center gap-x-3 whitespace-nowrap uppercase text-white"
           )}
         >
           {tokens.map((token, i) => {
-            const key = `${id}${i}`;
-            // TODO: Find out why this pops the Warning: Each child in a list
-            // should have a nuique "key" prop.
-            if (i) {
+            if (token === "X" || token === "VS") {
               return (
-                <>
-                  <span key={`${key}:separator`} style={{ color: props.color }}>
-                    {" X "}
-                  </span>
-                  <span key={`${key}:token`}>{token}</span>
-                </>
+                <span key={i} style={{ color: props.color }}>
+                  {token}
+                </span>
               );
+            } else if (token.match(/^\*.+\*$/)) {
+              const trimmedToken = token.slice(1, -1);
+              return (
+                <span key={i} style={{ color: props.color }}>
+                  {trimmedToken}
+                </span>
+              );
+            } else {
+              return <span key={i}>{token}</span>;
             }
-            return <span key={key}>{token}</span>;
           })}
         </div>
       </div>
