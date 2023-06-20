@@ -12,6 +12,15 @@ interface Props {
   fontName: string;
 }
 
+// TODO: refactor this
+const withSpacing = (i: number, s: string) => {
+  if (i === 0) {
+    return `${s}`;
+  } else {
+    return ` ${s}`;
+  }
+};
+
 export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
   props: Props,
   ref
@@ -43,25 +52,25 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
           className={cn(
             font.baseTokens,
             font.sizeTokens,
-            "absolute bottom-0 left-1/2 flex -translate-x-1/2 items-center gap-x-3 whitespace-nowrap uppercase text-white"
+            "absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap uppercase text-white"
           )}
         >
           {tokens.map((token, i) => {
             if (token === "X" || token === "VS") {
               return (
                 <span key={i} style={{ color: props.color }}>
-                  {token}
+                  {withSpacing(i, token)}
                 </span>
               );
             } else if (token.match(/^\*.+\*$/)) {
               const trimmedToken = token.slice(1, -1);
               return (
                 <span key={i} style={{ color: props.color }}>
-                  {trimmedToken}
+                  {withSpacing(i, trimmedToken)}
                 </span>
               );
             } else {
-              return <span key={i}>{token}</span>;
+              return <span key={i}>{withSpacing(i, token)}</span>;
             }
           })}
         </div>
