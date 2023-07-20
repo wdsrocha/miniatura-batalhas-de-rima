@@ -25,7 +25,7 @@ export default function AboutPage() {
                 />
               </dt>
               <dd>
-                <a className="hover:text-white" href={contact.href}>
+                <a className="underline hover:text-white" href={contact.href}>
                   {contact.description}
                 </a>
               </dd>
