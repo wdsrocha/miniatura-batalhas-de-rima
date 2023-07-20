@@ -1,6 +1,7 @@
 "use client";
 
 import demo from "../../public/images/demo.png";
+import { Navbar } from "@/components/Navbar";
 import Image from "next/image";
 import { SVGProps } from "react";
 import Balancer, { Provider } from "react-wrap-balancer";
@@ -74,7 +75,7 @@ export default function Home() {
               }}
             />
           </div>
-          <div className="pb-6 pt-24 sm:pb-8 sm:pt-32">
+          <div className="pt-24 sm:pt-32">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
               <div className="mx-auto max-w-2xl text-center">
                 <Provider>
@@ -88,8 +89,7 @@ export default function Home() {
                     as="p"
                     className="mt-6 text-lg leading-8 text-gray-300"
                   >
-                    Crie miniaturas para os vídeos de batalha de rima de forma
-                    simples.
+                    Crie miniaturas para os vídeos de forma simples.
                   </Balancer>
                 </Provider>
                 <div className="mt-10 flex items-center justify-center gap-x-6">
