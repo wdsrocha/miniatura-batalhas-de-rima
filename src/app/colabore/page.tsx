@@ -1,4 +1,3 @@
-import { Main } from "@/components/Main";
 import { Navbar } from "@/components/Navbar";
 import { contacts } from "@/lib/contact";
 
@@ -6,15 +5,15 @@ export default function AboutPage() {
   return (
     <>
       <Navbar path="colabore" />
-      <Main>
-        <h2 className="text-3xl font-bold tracking-tight text-white">
-          Fala comigo
-        </h2>
-        <p className="mt-6 text-lg leading-8 text-gray-300">
-          Este é um projeto pequeno, cuidado por apenas uma pessoa. Fique à
-          vontade para deixar comentários, sugerir melhorias, reprotar bugs ou
-          qualquer outra coisa diratamente comigo:
-        </p>
+      <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+        <article className="prose prose-invert md:prose-lg">
+          <h1 className="">Fala comigo</h1>
+          <p className="">
+            Este é um projeto pequeno, cuidado por apenas uma pessoa. Fique à
+            vontade para deixar comentários, sugerir melhorias, reprotar bugs ou
+            qualquer outra coisa diratamente comigo:
+          </p>
+        </article>
         <dl className="mt-10 space-y-4 text-base leading-7 text-gray-300">
           {contacts.map((contact, i) => (
             <div key={i} className="flex gap-x-4">
@@ -33,7 +32,7 @@ export default function AboutPage() {
             </div>
           ))}
         </dl>
-      </Main>
+      </main>
     </>
   );
 }

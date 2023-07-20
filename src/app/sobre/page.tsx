@@ -1,16 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable react/no-unescaped-entities */
-import { Main } from "@/components/Main";
 import { Navbar } from "@/components/Navbar";
-import Image from "next/image";
 
 export default function AboutPage() {
   return (
     <>
       <Navbar path="sobre"></Navbar>
-      <Main>
-        <article className="prose prose-lg prose-invert md:prose-xl prose-img:mx-auto">
+      <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+        <article className="prose prose-invert md:prose-lg prose-img:mx-auto">
           <h1>Miniatura de Vídeo para Batalhas de Rima</h1>
           <p>
             Todas as semanas centenas de batalhas de rima acontecem no Brasil e
@@ -74,17 +70,11 @@ export default function AboutPage() {
             comunidade, posso evoluir as funcionalidades.
           </p>
           <p>
-            Entre em contato via e-mail (
-            <a href="mailto:hi@wdsrocha.com">hi@wdsrocha.com</a>) ou Instagram (
-            <a href="https://instagram.com/sharp.freestyle">@sharp.freestyle</a>
-            ). Caso seja um programador, o código deste site está disponível no{" "}
-            <a href="https://github.com/wdsrocha/miniatura-batalhas-de-rima">
-              GitHub
-            </a>
-            .
+            Confira a <a href="/colabore">página de colaboração</a> para saber
+            como entrar em contato.
           </p>
         </article>
-      </Main>
+      </main>
     </>
   );
 }

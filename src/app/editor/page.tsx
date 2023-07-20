@@ -3,7 +3,6 @@
 import { COLORS, ColorPicker } from "@/components/ColorPicker";
 import { FontPicker } from "@/components/FontPicker";
 import { Input } from "@/components/Input";
-import { Main } from "@/components/Main";
 import { Modal } from "@/components/Modal";
 import { Navbar } from "@/components/Navbar";
 import { SuccessToast } from "@/components/SuccessToast";
@@ -72,14 +71,14 @@ export default function EditorPage() {
     return (
       <>
         <Navbar path="editor" />
-        <Main>
+        <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center">
             <Upload
               handleFiles={handleFiles}
               label="Escolha uma imagem para começar"
             />
           </div>
-        </Main>
+        </main>
       </>
     );
   }
@@ -87,7 +86,7 @@ export default function EditorPage() {
   return (
     <>
       <Navbar path="editor" />
-      <Main>
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-around gap-y-8 lg:flex-row-reverse lg:items-start lg:gap-x-8">
           <Thumbnail
             ref={thumbnailRef}
@@ -172,7 +171,7 @@ export default function EditorPage() {
             </button>
           </form>
         </div>
-      </Main>
+      </main>
       <Modal
         open={showCropper}
         setOpen={setShowCropper}
