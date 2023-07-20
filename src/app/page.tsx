@@ -82,14 +82,14 @@ export default function Home() {
                     as="h1"
                     className="text-4xl font-bold tracking-tight text-white sm:text-6xl"
                   >
-                    Seu canal de rimas com um toque profissional
+                    Miniaturas de Batalha
                   </Balancer>
                   <Balancer
                     as="p"
                     className="mt-6 text-lg leading-8 text-gray-300"
                   >
-                    Gere miniaturas para os vídeos de batalha de rima sem
-                    precisar de conhecimento em edição de imagem.
+                    Crie miniaturas para os vídeos de batalha de rima de forma
+                    simples.
                   </Balancer>
                 </Provider>
                 <div className="mt-10 flex items-center justify-center gap-x-6">
