@@ -6,6 +6,7 @@ import Link from "next/link";
 const navigation = [
   { name: "Editor", href: "/editor" },
   { name: "Sobre", href: "/sobre" },
+  { name: "Colabore", href: "/colabore" },
 ];
 
 export const Navbar = (props: { path: string }) => (
