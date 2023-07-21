@@ -149,6 +149,9 @@ export default function EditorPage() {
               id="title"
               label="Título"
               placeholder="Emicida X Negra Re"
+              description={`"X" e "VS" são destacados automaticamente. Para
+              destacar outras palavras, insira um asterisco antes e depois da
+              palavra. Exemplo: Grande *Final*`}
               value={title}
               onChange={(event) => setTitle(event.target.value)}
             />
