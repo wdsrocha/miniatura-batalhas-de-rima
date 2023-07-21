@@ -1,4 +1,5 @@
 import { Input } from "./Input";
+import { SlideOver } from "./SlideOver";
 import { Popover, RadioGroup, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import cn from "classnames";
@@ -41,6 +42,7 @@ const isLight = (hexColor: string | undefined) => {
 
 export const ColorPicker = (props: Props) => {
   const [customColor, setCustomColor] = useState<string | undefined>();
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const onCustomColorChange = (color: string) => {
     setCustomColor(color);
@@ -84,7 +86,7 @@ export const ColorPicker = (props: Props) => {
           </RadioGroup.Option>
         ))}
         <Popover>
-          <Popover.Button>
+          <Popover.Button onClick={() => setPickerOpen(true)}>
             <RadioGroup.Option
               value={customColor}
               className={({ active, checked }) =>
@@ -119,6 +121,18 @@ export const ColorPicker = (props: Props) => {
               </span>
             </RadioGroup.Option>
           </Popover.Button>
+          <SlideOver open={pickerOpen} setOpen={setPickerOpen}>
+            <HexColorPicker
+              color={customColor}
+              onChange={onCustomColorChange}
+            />
+            <Input
+              id="customColorPicker"
+              label="Hex"
+              value={customColor || ""}
+              onChange={(e) => onCustomColorChange(e.target.value)}
+            />
+          </SlideOver>
           <Transition
             as={Fragment}
             enter="transition ease-out duration-200"
