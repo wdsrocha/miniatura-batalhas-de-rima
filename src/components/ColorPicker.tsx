@@ -1,3 +1,4 @@
+import { Input } from "./Input";
 import { Popover, RadioGroup, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import cn from "classnames";
@@ -128,10 +129,20 @@ export const ColorPicker = (props: Props) => {
             leaveTo="opacity-0 translate-y-1"
           >
             <Popover.Panel className="absolute z-10">
-              <HexColorPicker
-                color={customColor}
-                onChange={onCustomColorChange}
-              />
+              <div className="flex flex-col items-center gap-y-4 rounded-lg bg-gray-700 pb-3">
+                <HexColorPicker
+                  color={customColor}
+                  onChange={onCustomColorChange}
+                />
+                <div className="px-2">
+                  <Input
+                    id="customColorPicker"
+                    label="Hex"
+                    value={customColor || ""}
+                    onChange={(e) => onCustomColorChange(e.target.value)}
+                  />
+                </div>
+              </div>
             </Popover.Panel>
           </Transition>
         </Popover>
