@@ -73,6 +73,28 @@ export default function AboutPage() {
             Confira a <a href="/colabore">página de colaboração</a> para saber
             como entrar em contato.
           </p>
+          <h2>Batalhas Parceiras</h2>
+          <p>
+            Canais que estão utilizando este site. Caso esteja usando e queira
+            entrar na lista, é só me avisar.
+          </p>
+          <ul>
+            <li>
+              <a href="https://www.youtube.com/@bdlaprata">
+                Batalha da La Prata - Manaus AM
+              </a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/@batalhadanova">
+                Batalha da Nova - Manaus AM
+              </a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/@batalhadas_minaam">
+                Batalha das Minas - Manaus AM
+              </a>
+            </li>
+          </ul>
         </article>
       </main>
     </>
