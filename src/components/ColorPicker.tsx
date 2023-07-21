@@ -1,4 +1,5 @@
 import { Input } from "./Input";
+import { SlideOver } from "./SlideOver";
 import { Popover, RadioGroup, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import cn from "classnames";
@@ -39,8 +40,52 @@ const isLight = (hexColor: string | undefined) => {
   return luma > 128;
 };
 
+const CustomColorButton = (props: {
+  customColor?: string;
+  onClick?: () => void;
+}) => {
+  const { customColor, onClick } = props;
+  return (
+    <RadioGroup.Option
+      onClick={onClick}
+      value={customColor}
+      className={({ active, checked }) =>
+        cn(
+          "ring-gray-400",
+          checked && active ? "ring" : "",
+          checked && !active ? "ring-2" : "",
+          "relative flex items-center justify-center",
+          "cursor-pointer rounded-md p-0.5 hover:brightness-150 focus:outline-none"
+        )
+      }
+    >
+      <RadioGroup.Label as="span" className="sr-only">
+        Cor customizada referente ao código hex {customColor}
+      </RadioGroup.Label>
+      <span
+        aria-hidden="true"
+        style={{
+          backgroundColor: customColor,
+        }}
+        className={cn(
+          "flex h-8 w-8 items-center justify-center rounded",
+          !customColor && "border border-white"
+        )}
+      >
+        <PlusIcon
+          className={cn(
+            "h-6 w-6",
+            isLight(customColor) ? "text-black" : "text-white"
+          )}
+        />
+      </span>
+    </RadioGroup.Option>
+  );
+};
+
 export const ColorPicker = (props: Props) => {
   const [customColor, setCustomColor] = useState<string | undefined>();
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const onCustomColorChange = (color: string) => {
     setCustomColor(color);
@@ -83,69 +128,63 @@ export const ColorPicker = (props: Props) => {
             />
           </RadioGroup.Option>
         ))}
-        <Popover>
-          <Popover.Button>
-            <RadioGroup.Option
-              value={customColor}
-              className={({ active, checked }) =>
-                cn(
-                  "ring-gray-400",
-                  checked && active ? "ring" : "",
-                  checked && !active ? "ring-2" : "",
-                  "relative flex items-center justify-center",
-                  "cursor-pointer rounded-md p-0.5 hover:brightness-150 focus:outline-none"
-                )
-              }
-            >
-              <RadioGroup.Label as="span" className="sr-only">
-                Cor customizada referente ao código hex {customColor}
-              </RadioGroup.Label>
-              <span
-                aria-hidden="true"
+
+        <div className="block md:hidden ">
+          <CustomColorButton
+            customColor={customColor}
+            onClick={() => setPickerOpen(true)}
+          />
+          <SlideOver open={pickerOpen} setOpen={setPickerOpen}>
+            <div className="space-y-4">
+              <HexColorPicker
                 style={{
-                  backgroundColor: customColor,
+                  width: "auto",
                 }}
-                className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded",
-                  !customColor && "border border-white"
-                )}
-              >
-                <PlusIcon
-                  className={cn(
-                    "h-6 w-6",
-                    isLight(customColor) ? "text-black" : "text-white"
-                  )}
-                />
-              </span>
-            </RadioGroup.Option>
-          </Popover.Button>
-          <Transition
-            as={Fragment}
-            enter="transition ease-out duration-200"
-            enterFrom="opacity-0 translate-y-1"
-            enterTo="opacity-100 translate-y-0"
-            leave="transition ease-in duration-150"
-            leaveFrom="opacity-100 translate-y-0"
-            leaveTo="opacity-0 translate-y-1"
-          >
-            <Popover.Panel className="absolute z-10">
-              <div className="flex flex-col items-center gap-y-4 rounded-lg bg-gray-700 pb-3">
-                <HexColorPicker
-                  color={customColor}
-                  onChange={onCustomColorChange}
-                />
-                <div className="px-2">
-                  <Input
-                    id="customColorPicker"
-                    label="Hex"
-                    value={customColor || ""}
-                    onChange={(e) => onCustomColorChange(e.target.value)}
+                color={customColor}
+                onChange={onCustomColorChange}
+              />
+              <Input
+                id="customColorPicker"
+                label="Hex"
+                value={customColor || ""}
+                onChange={(e) => onCustomColorChange(e.target.value)}
+              />
+            </div>
+          </SlideOver>
+        </div>
+        <div className="hidden md:block">
+          <Popover>
+            <Popover.Button>
+              <CustomColorButton customColor={customColor} />
+            </Popover.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-200"
+              enterFrom="opacity-0 translate-y-1"
+              enterTo="opacity-100 translate-y-0"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100 translate-y-0"
+              leaveTo="opacity-0 translate-y-1"
+            >
+              <Popover.Panel className="absolute z-10">
+                <div className="flex flex-col items-center gap-y-4 rounded-lg bg-gray-700 pb-3">
+                  <HexColorPicker
+                    color={customColor}
+                    onChange={onCustomColorChange}
                   />
+                  <div className="px-2">
+                    <Input
+                      id="customColorPicker"
+                      label="Hex"
+                      value={customColor || ""}
+                      onChange={(e) => onCustomColorChange(e.target.value)}
+                    />
+                  </div>
                 </div>
-              </div>
-            </Popover.Panel>
-          </Transition>
-        </Popover>
+              </Popover.Panel>
+            </Transition>
+          </Popover>
+        </div>
       </div>
     </RadioGroup>
   );
