@@ -3,8 +3,6 @@ import cn from "classnames";
 import Image from "next/image";
 import { forwardRef, useId } from "react";
 
-export type Color = "red" | "green" | "blue" | "yellow";
-
 interface Props {
   image?: string;
   title: string;
