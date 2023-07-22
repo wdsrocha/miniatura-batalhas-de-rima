@@ -146,6 +146,7 @@ export const ColorPicker = (props: Props) => {
               <Input
                 id="customColorPicker"
                 label="Hex"
+                placeholder="#ffffff"
                 value={customColor || ""}
                 onChange={(e) => onCustomColorChange(e.target.value)}
               />
@@ -176,6 +177,7 @@ export const ColorPicker = (props: Props) => {
                     <Input
                       id="customColorPicker"
                       label="Hex"
+                      placeholder="#ffffff"
                       value={customColor || ""}
                       onChange={(e) => onCustomColorChange(e.target.value)}
                     />
