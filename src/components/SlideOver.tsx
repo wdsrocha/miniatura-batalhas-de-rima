@@ -16,22 +16,22 @@ export function SlideOver(props: Props) {
 
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
-            <div className="pt-full pointer-events-none fixed inset-y-0 right-0 flex max-w-full">
+            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pt-8">
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-500 sm:duration-700"
                 enterFrom="translate-y-full"
-                enterTo="translate-y-[50%]"
+                enterTo="translate-y-[40%]"
                 leave="transform transition ease-in-out duration-500 sm:duration-700"
                 leaveFrom="translate-y-0"
                 leaveTo="translate-y-full"
               >
-                <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                  <div className="flex flex-col overflow-y-scroll bg-gray-700 py-6 shadow-xl">
+                <Dialog.Panel className="pointer-events-auto w-screen">
+                  <div className="flex h-full flex-col overflow-y-scroll bg-gray-700 py-6 shadow-xl">
                     <div className="px-4 sm:px-6">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className="text-base font-semibold leading-6 text-white">
-                          Cor customizável
+                          Cor de destaque
                         </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
