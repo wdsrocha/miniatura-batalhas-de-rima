@@ -7,7 +7,7 @@ import Balancer, { Provider } from "react-wrap-balancer";
 
 export default function Home() {
   return (
-    <div className="flex h-screen flex-col bg-gray-900">
+    <div className="flex h-[calc(100dvh)] flex-col bg-gray-900">
       <main className="isolate mb-auto">
         {/* Hero section */}
         <div className="relative">
