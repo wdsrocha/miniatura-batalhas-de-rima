@@ -7,8 +7,8 @@ import Balancer, { Provider } from "react-wrap-balancer";
 
 export default function Home() {
   return (
-    <div className="bg-gray-900">
-      <main className="isolate">
+    <div className="flex h-screen flex-col bg-gray-900">
+      <main className="isolate mb-auto">
         {/* Hero section */}
         <div className="relative">
           <div
@@ -55,24 +55,12 @@ export default function Home() {
                   </a>
                 </div>
               </div>
-              <div className="mt-16 flex items-center justify-center sm:mt-24">
+              <div className="mt-8 flex items-center justify-center sm:mt-12">
                 <div className="bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:p-4">
                   <Image src={demo} alt="" />
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
-            aria-hidden="true"
-          >
-            <div
-              className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-              style={{
-                clipPath:
-                  "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-              }}
-            />
           </div>
         </div>
       </main>
@@ -83,7 +71,7 @@ export default function Home() {
           Footer
         </h2>
         <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
-          <div className="mt-8 border-t border-white/10 pt-8">
+          <div className="border-t border-white/10 pt-8">
             <div className="flex items-center justify-center space-x-6 md:order-2">
               {contacts.map((contact) => (
                 <a
