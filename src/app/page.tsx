@@ -57,7 +57,7 @@ export default function Home() {
               </div>
               <div className="mt-8 flex items-center justify-center sm:mt-12">
                 <div className="bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:p-4">
-                  <Image src={demo} alt="" />
+                  <Image src={demo} alt="" priority={true} />
                 </div>
               </div>
             </div>
