@@ -59,7 +59,9 @@ describe("Editor page", () => {
 
     cy.get("button").contains("Salvar imagem").click();
 
-    cy.contains("Pronto!");
-    cy.contains("Sua miniatura foi salva com sucesso.");
+    cy.contains("Pronto!").should("exist");
+    cy.contains("Sua miniatura foi salva com sucesso.").should("exist");
+
+    cy.verifyDownload("fulano-x-ciclano.png");
   });
 });

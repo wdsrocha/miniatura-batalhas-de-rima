@@ -39,3 +39,7 @@ next-env.d.ts
 
 # cypress
 cypress/downloads/
+cypress/results/
+cypress/reports/
+cypress/screenshots/
+cypress/videos/

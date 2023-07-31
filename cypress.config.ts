@@ -1,12 +1,15 @@
 import { defineConfig } from "cypress";
 
+const { verifyDownloadTasks } = require("cy-verify-downloads");
+
 export default defineConfig({
   e2e: {
-    setupNodeEvents(on, config) {},
+    setupNodeEvents(on, config) {
+      on("task", verifyDownloadTasks);
+    },
     excludeSpecPattern: ["**/downloads/*"],
     viewportWidth: 550,
     viewportHeight: 750,
-    supportFile: false,
     baseUrl: "http://localhost:3000",
   },
 });
