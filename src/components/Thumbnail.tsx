@@ -29,7 +29,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
   const font = fonts[props.fontName];
 
   return (
-    <div ref={ref}>
+    <div data-test="thumbnail-frame" ref={ref}>
       <div
         style={{ borderColor: props.color }}
         className={cn(

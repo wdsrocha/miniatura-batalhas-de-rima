@@ -123,6 +123,7 @@ export default function EditorPage() {
                       className="-ml-0.4 h-4 w-4 text-gray-400 "
                       aria-hidden="true"
                     />
+                    <span className="sr-only">Editar recorte</span>
                   </button>
                   <button
                     type="button"
@@ -140,6 +141,7 @@ export default function EditorPage() {
                       className="-ml-0.4 h-4 w-4 text-gray-400"
                       aria-hidden="true"
                     />
+                    <span className="sr-only">Apagar imagem</span>
                   </button>
                 </div>
               )}

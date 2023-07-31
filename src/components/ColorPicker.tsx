@@ -101,7 +101,7 @@ export const ColorPicker = (props: Props) => {
       <RadioGroup.Label className="block text-sm font-medium leading-6 text-white">
         Cor
       </RadioGroup.Label>
-      <div className="flex flex-wrap gap-2">
+      <div data-test="color-options" className="flex flex-wrap gap-2">
         {COLORS.map((color) => (
           <RadioGroup.Option
             key={color.value}
