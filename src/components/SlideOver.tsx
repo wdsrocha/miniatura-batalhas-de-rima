@@ -4,14 +4,14 @@ import { Fragment, ReactNode, useState } from "react";
 
 interface Props {
   open: boolean;
-  setOpen: (open: boolean) => void;
+  onClose: () => void;
   children?: ReactNode;
 }
 
 export function SlideOver(props: Props) {
   return (
     <Transition.Root show={props.open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={props.setOpen}>
+      <Dialog as="div" className="relative z-10" onClose={props.onClose}>
         <div className="fixed inset-0" />
 
         <div className="fixed inset-0 overflow-hidden">
@@ -37,7 +37,7 @@ export function SlideOver(props: Props) {
                           <button
                             type="button"
                             className="rounded-md bg-gray-700 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            onClick={() => props.setOpen(false)}
+                            onClick={props.onClose}
                           >
                             <span className="sr-only">Close panel</span>
                             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
