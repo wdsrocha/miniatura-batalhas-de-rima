@@ -176,7 +176,7 @@ const CustomColorPicker = (props: CustomColorPickerProps) => {
               id="customColorPicker"
               label="Hex"
               placeholder="#ffffff"
-              value={props.color || ""}
+              value={props.color !== "transparent" ? props.color : ""}
               onChange={(e) => props.setColor(e.target.value)}
             />
 
@@ -211,7 +211,7 @@ const CustomColorPicker = (props: CustomColorPickerProps) => {
                     id="customColorPicker"
                     label="Hex"
                     placeholder="#ffffff"
-                    value={props.color || ""}
+                    value={props.color !== "transparent" ? props.color : ""}
                     onChange={(e) => props.setColor(e.target.value)}
                   />
                 </div>
