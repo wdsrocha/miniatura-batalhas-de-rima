@@ -9,6 +9,7 @@ import { SuccessToast } from "@/components/SuccessToast";
 import { Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
 import { fonts } from "@/lib/fonts";
+import { usePersistedState } from "@/lib/usePersistedState";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import cn from "classnames";
 import { toPng } from "html-to-image";
@@ -30,8 +31,11 @@ export default function EditorPage() {
   const [image, setImage] = useState<string | null>(null);
   const [imageFilename, setImageFilename] = useState("");
   const [title, setTitle] = useState("");
-  const [color, setColor] = useState(COLORS[0].value);
-  const [selectedFont, setSelectedFont] = useState(Object.keys(fonts)[0]);
+  const [color, setColor] = usePersistedState<string>(COLORS[0].value, "color");
+  const [selectedFont, setSelectedFont] = usePersistedState(
+    Object.keys(fonts)[0],
+    "font"
+  );
   const [showCropper, setShowCropper] = useState(false);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);

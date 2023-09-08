@@ -1,5 +1,6 @@
 import { Input } from "./Input";
 import { SlideOver } from "./SlideOver";
+import { usePersistedState } from "@/lib/usePersistedState";
 import { Popover, RadioGroup, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import cn from "classnames";
@@ -84,8 +85,10 @@ const CustomColorButton = (props: {
 };
 
 export const ColorPicker = (props: Props) => {
-  const [customColor, setCustomColor] = useState<string>("transparent");
-  const [pickerOpen, setPickerOpen] = useState(false);
+  const [customColor, setCustomColor] = usePersistedState<string>(
+    "transparent",
+    "custom-color"
+  );
 
   const onCustomColorChange = (color: string) => {
     setCustomColor(color);
