@@ -13,7 +13,7 @@ import { usePersistedState } from "@/lib/usePersistedState";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import cn from "classnames";
 import { toPng } from "html-to-image";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 // https://gist.github.com/codeguy/6684588?permalink_comment_id=3361909#gistcomment-3361909
 const slugify = (s: string) =>
@@ -39,12 +39,6 @@ export default function EditorPage() {
   const [showCropper, setShowCropper] = useState(false);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/service-worker.js");
-    }
-  }, []);
 
   const exportImage = async () => {
     if (thumbnailRef.current) {
