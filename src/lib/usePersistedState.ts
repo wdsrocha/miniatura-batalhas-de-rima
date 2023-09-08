@@ -1,3 +1,4 @@
+// Based on
 // https://thomasderleth.de/keeping-react-state-and-local-storage-in-sync/
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
@@ -7,11 +8,14 @@ export function usePersistedState<T>(
   defaultValue: T,
   key: string
 ): PersistedState<T> {
-  const [value, setValue] = useState<T>(() => {
-    const value = window.localStorage.getItem(key);
+  const [value, setValue] = useState<T>(defaultValue);
 
-    return value ? (JSON.parse(value) as T) : defaultValue;
-  });
+  useEffect(() => {
+    const value = window.localStorage.getItem(key);
+    if (value) {
+      setValue(JSON.parse(value));
+    }
+  }, [key]);
 
   useEffect(() => {
     window.localStorage.setItem(key, JSON.stringify(value));
