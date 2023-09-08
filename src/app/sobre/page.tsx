@@ -19,11 +19,11 @@ export default function AboutPage() {
             miniaturas.
           </p>
           <p>
-            A motivação desta aplicação é tornar a criação de miniaturas de
-            vídeo mais acessíveis para organizações de batalhas, pois nem todas
-            possuem tempo ou recursos para elaborar um bom design. Além disso, a
-            aplicação também ajuda a agilizar o processo para organizações que
-            já publicam os vídeos com suas própias miniaturas.
+            A motivação deste site é tornar a criação de miniaturas de vídeo
+            mais acessíveis para organizações de batalhas, pois nem todas
+            possuem tempo ou recursos para elaborar um bom design. Além disso, o
+            site também ajuda a agilizar o processo para organizações que já
+            publicam os vídeos com suas própias miniaturas.
           </p>
           <p>
             Por exemplo, com uma breve busca no YouTube é possível notar o
@@ -44,8 +44,8 @@ export default function AboutPage() {
             />
           </p>
           <p>
-            Após carregar a miniatura original do vídeo da Batalha da Glória na
-            aplicação, um resultado melhor é obtido com pouco esforço.
+            Após carregar a miniatura original do vídeo da Batalha da Glória no
+            site, um resultado melhor é obtido com pouco esforço.
           </p>
           <p>
             <img
@@ -64,10 +64,10 @@ export default function AboutPage() {
             .
           </p>
           <p>
-            Apesar de funcional, muitas melhorias podem ser integradas à
-            aplicação, como adição de múltiplos estilos, cores diferentes,
-            alteração de fontes, entre outros. Dependendo do interesse da
-            comunidade, posso evoluir as funcionalidades.
+            Apesar de funcional, muitas melhorias podem ser integradas ao site,
+            como adição de múltiplos estilos, cores diferentes, alteração de
+            fontes, entre outros. Dependendo do interesse da comunidade, posso
+            evoluir as funcionalidades.
           </p>
           <p>
             Confira a <a href="/colabore">página de colaboração</a> para saber
@@ -80,7 +80,7 @@ export default function AboutPage() {
           </p>
           <ul>
             <li>
-              <a href="https://www.youtube.com/@bdlaprata">
+              <a href="https://www.youtube.com/@batalhadalaprata">
                 Batalha da La Prata - Manaus AM
               </a>
             </li>
