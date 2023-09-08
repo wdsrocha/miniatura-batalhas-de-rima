@@ -7,6 +7,7 @@ const navigation = [
   { name: "Editor", href: "/editor" },
   { name: "Sobre", href: "/sobre" },
   { name: "Colabore", href: "/colabore" },
+  { name: "Novidades", href: "/novidades" },
 ];
 
 export const Navbar = (props: { path: string }) => (
