@@ -53,24 +53,26 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
             "absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap uppercase text-white"
           )}
         >
-          {tokens.map((token, i) => {
-            if (token === "X" || token === "VS") {
-              return (
-                <span key={i} style={{ color: props.color }}>
-                  {withSpacing(i, token)}
-                </span>
-              );
-            } else if (token.match(/^\*.+\*$/)) {
-              const trimmedToken = token.slice(1, -1);
-              return (
-                <span key={i} style={{ color: props.color }}>
-                  {withSpacing(i, trimmedToken)}
-                </span>
-              );
-            } else {
-              return <span key={i}>{withSpacing(i, token)}</span>;
-            }
-          })}
+          <div className="w-[320px] whitespace-pre-wrap text-center md:w-[640px]">
+            {tokens.map((token, i) => {
+              if (token === "X" || token === "VS") {
+                return (
+                  <span key={i} style={{ color: props.color }}>
+                    {withSpacing(i, token)}
+                  </span>
+                );
+              } else if (token.match(/^\*.+\*$/)) {
+                const trimmedToken = token.slice(1, -1);
+                return (
+                  <span key={i} style={{ color: props.color }}>
+                    {withSpacing(i, trimmedToken)}
+                  </span>
+                );
+              } else {
+                return <span key={i}>{withSpacing(i, token)}</span>;
+              }
+            })}
+          </div>
         </div>
       </div>
     </div>
