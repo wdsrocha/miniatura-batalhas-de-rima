@@ -25,20 +25,28 @@ export const Navbar = (props: { path: string }) => (
           {navigation.map((item) => {
             const current = props.path === item.href.substring(1);
             return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  current
-                    ? "bg-gray-900 text-white"
-                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                  "rounded-md px-3 py-2 text-sm font-medium",
-                  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              <div key={item.name} className="relative flex">
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "rounded-md px-3 py-2 text-sm font-medium",
+                    "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                  )}
+                  aria-current={current ? "page" : undefined}
+                >
+                  <span>{item.name}</span>
+                </Link>
+                {item.href === "/novidades" && (
+                  <span className="relative -ml-2 flex h-3 w-3">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+                    <span className="relative inline-flex h-3 w-3 rounded-full bg-sky-500"></span>
+                  </span>
                 )}
-                aria-current={current ? "page" : undefined}
-              >
-                {item.name}
-              </Link>
+              </div>
             );
           })}
         </div>
