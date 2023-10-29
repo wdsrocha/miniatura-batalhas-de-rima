@@ -7,7 +7,7 @@ const navigation = [
   { name: "Editor", href: "/editor" },
   { name: "Sobre", href: "/sobre" },
   { name: "Colabore", href: "/colabore" },
-  { name: "Novidades", href: "/novidades" },
+  // { name: "Novidades", href: "/novidades" },
 ];
 
 export const Navbar = (props: { path: string }) => (
@@ -40,12 +40,12 @@ export const Navbar = (props: { path: string }) => (
                 >
                   <span>{item.name}</span>
                 </Link>
-                {item.href === "/novidades" && (
+                {/* {item.href === "/novidades" && (
                   <span className="relative -ml-2 flex h-3 w-3">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
                     <span className="relative inline-flex h-3 w-3 rounded-full bg-sky-500"></span>
                   </span>
-                )}
+                )} */}
               </div>
             );
           })}

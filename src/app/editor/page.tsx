@@ -5,6 +5,7 @@ import { FontPicker } from "@/components/FontPicker";
 import { Input } from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import { Navbar } from "@/components/Navbar";
+import { PaddingPicker } from "@/components/PaddingPicker";
 import { SuccessToast } from "@/components/SuccessToast";
 import { Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
@@ -39,6 +40,10 @@ export default function EditorPage() {
   const [showCropper, setShowCropper] = useState(false);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [selectedPadding, setSelectedPadding] = usePersistedState(
+    "mx-[1rem]",
+    "padding"
+  );
 
   const exportImage = async () => {
     if (thumbnailRef.current) {
@@ -98,6 +103,7 @@ export default function EditorPage() {
             title={title}
             fontName={selectedFont}
             color={color}
+            padding={selectedPadding}
           />
           <form
             className="w-full space-y-8"
@@ -160,6 +166,11 @@ export default function EditorPage() {
               palavra. Exemplo: Grande *Final*`}
               value={title}
               onChange={(event) => setTitle(event.target.value)}
+            />
+
+            <PaddingPicker
+              selectedPadding={selectedPadding}
+              onChange={setSelectedPadding}
             />
 
             <FontPicker

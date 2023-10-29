@@ -1,4 +1,4 @@
-import { fonts } from "@/lib/fonts";
+import { fonts, paddings } from "@/lib/fonts";
 import cn from "classnames";
 import Image from "next/image";
 import { forwardRef, useId } from "react";
@@ -8,6 +8,7 @@ interface Props {
   title: string;
   color: string;
   fontName: string;
+  padding: string;
 }
 
 // TODO: refactor this
@@ -26,16 +27,15 @@ const PairThumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
   const title = props.title.toLocaleUpperCase();
   const id = useId();
 
-  if (!title.includes("+")) {
-    return <div></div>;
-  }
+  const [l0, l1, versus, r0, r1] = getGroups(title);
+  const leftTokens = [l0, l1];
+  const rightTokens = [r0, r1];
 
-  const [left, right] = title.split("VS");
-
-  const leftTokens = left.split("+");
-  const rightTokens = right.split("+");
+  // console.log({ left, versus, right, leftTokens, rightTokens });
 
   const font = fonts[props.fontName];
+  const padding = props.padding;
+  console.log({ font, padding });
 
   return (
     <div data-test="thumbnail-frame" ref={ref}>
@@ -75,12 +75,12 @@ const PairThumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
             <div
               style={{ color: props.color }}
               className={cn(
-                "mx-[6rem]",
+                padding,
                 fonts["headliner"].baseTokens,
                 fonts["headliner"].sizeTokens
               )}
             >
-              VS
+              {versus}
             </div>
             <div className="flex flex-col items-end">
               {rightTokens.map((token, i) => {
@@ -115,6 +115,26 @@ const PairThumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
     </div>
   );
 });
+
+function getGroups(title: string) {
+  // Checks if there is two or more players in each team
+  const expression = String.raw`^(.+) e (.+) (x|vs) (.+) e (.+)$`;
+  const regex = new RegExp(
+    expression,
+    "giu" // global, insensitive and unicode
+  );
+
+  // const result = title.match(regex);
+  const result = regex.exec(title);
+
+  if (!result) {
+    return ["", "", ""];
+  }
+
+  const [_, leftTeam0, leftTeam1, versus, rightTeam0, rightTeam1] = result;
+
+  return [leftTeam0, leftTeam1, versus, rightTeam0, rightTeam1];
+}
 
 function isPair(title: string) {
   // Checks if there is two or more players in each team
@@ -212,7 +232,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
         style={{ borderColor: props.color }}
         className={cn(
           "relative h-[180px] w-[320px] overflow-hidden border-4 md:h-[360px] md:w-[640px]",
-          "via-23% bg-gradient-to-t from-black via-black/90 to-transparent to-40%"
+          "via-23% bg-gradient-to-t from-black via-black/90 to-transparent to-60%" // to-40% single line to-60% double line
         )}
       >
         {props.image ? (
@@ -221,6 +241,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
             width="1280"
             height="720"
             src={props.image}
+            onLoad={(event) => {}}
             alt=""
           />
         ) : null}
@@ -241,6 +262,8 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
                     {withSpacing(i, token)}
                   </span>
                 );
+              } else if (token === "\\N") {
+                return <br key={i} />;
               } else if (token.match(/^\*.+\*$/)) {
                 const trimmedToken = token.slice(1, -1);
                 return (

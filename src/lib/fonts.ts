@@ -37,27 +37,37 @@ const headlinerFont = localFont({
   variable: "--font-headliner",
 });
 
+export const paddings: Record<string, string> = {
+  0: "mx-[0rem]",
+  1: "mx-[1rem]",
+  2: "mx-[2rem]",
+  3: "mx-[3rem]",
+  4: "mx-[4rem]",
+  5: "mx-[5rem]",
+  6: "mx-[6rem]",
+};
+
 export const fonts: Record<string, Font> = {
   delirium: {
     label: "delirium",
     baseTokens: cn(deliriumFont.className, deliriumFont.variable),
-    sizeTokens: "text-5xl md:text-8xl",
+    sizeTokens: "text-4xl md:text-7xl",
   },
 
   headliner: {
     label: "headliner",
     baseTokens: cn(headlinerFont.className, headlinerFont.variable),
-    sizeTokens: "text-5xl md:text-8xl",
+    sizeTokens: "text-4xl md:text-7xl",
   },
   yulong: {
     label: "Yulong",
     baseTokens: cn(yulongFont.className, yulongFont.variable),
-    sizeTokens: "text-5xl mb-1 md:text-8xl md:mb-2 tracking-tight",
+    sizeTokens: "text-4xl mb-1 md:text-6xl md:mb-2 tracking-tight",
   },
   blocky: {
     label: "Blocky",
     baseTokens: cn(blockyFont.className, blockyFont.variable),
-    sizeTokens: "text-5xl mb-1 md:text-8xl md:mb-2",
+    sizeTokens: "text-4xl mb-1 md:text-7xl md:mb-2",
   },
   brookline: {
     label: "brookline",
