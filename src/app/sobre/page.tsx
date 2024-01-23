@@ -90,7 +90,7 @@ export default function AboutPage() {
               </a>
             </li>
             <li>
-              <a href="https://www.youtube.com/@batalhadas_minaam">
+              <a href="https://www.youtube.com/@batalhadasmina_am">
                 Batalha das Minas - Manaus AM
               </a>
             </li>
