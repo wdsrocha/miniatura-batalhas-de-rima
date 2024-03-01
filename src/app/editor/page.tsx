@@ -29,9 +29,9 @@ const slugify = (s: string) =>
 export default function EditorPage() {
   const thumbnailRef = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState<string | null>(null);
-  const [logo, setLogo] = useState<string | null>(null);
   const [imageFilename, setImageFilename] = useState("");
-  const [logoFilename, setLogoFilename] = useState("");
+  const [logo, setLogo] = usePersistedState<string | null>(null, "logo");
+  const [logoFilename, setLogoFilename] = usePersistedState("", "logoFilename");
   const [title, setTitle] = useState("");
   const [color, setColor] = usePersistedState<string>(COLORS[0].value, "color");
   const [selectedFont, setSelectedFont] = usePersistedState(
