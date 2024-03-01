@@ -15,6 +15,8 @@ import cn from "classnames";
 import { toPng } from "html-to-image";
 import { useRef, useState } from "react";
 
+const MAX_FILENAME_LENGTH = 20;
+
 // https://gist.github.com/codeguy/6684588?permalink_comment_id=3361909#gistcomment-3361909
 const slugify = (s: string) =>
   s
@@ -69,7 +71,11 @@ export default function EditorPage() {
     };
     reader.readAsDataURL(file as Blob);
 
-    setImageFilename(file.name);
+    setImageFilename(
+      file.name.length > MAX_FILENAME_LENGTH
+        ? file.name.slice(0, MAX_FILENAME_LENGTH) + "..."
+        : file.name
+    );
     setShowCropper(true);
   };
 
@@ -84,7 +90,11 @@ export default function EditorPage() {
       setLogo(event.target?.result as string);
     };
     reader.readAsDataURL(file as Blob);
-    setLogoFilename(file.name);
+    setLogoFilename(
+      file.name.length > MAX_FILENAME_LENGTH
+        ? file.name.slice(0, MAX_FILENAME_LENGTH) + "..."
+        : file.name
+    );
   };
 
   if (!image) {
@@ -123,7 +133,7 @@ export default function EditorPage() {
               event.preventDefault();
             }}
           >
-            <div className="items-top flex space-x-8">
+            <div className="items-top flex w-full space-x-8">
               <div className="space-y-2">
                 <Upload
                   id="image"
@@ -132,7 +142,7 @@ export default function EditorPage() {
                 />
                 {imageFilename && (
                   <div className="flex items-center justify-start space-x-2">
-                    <p className="text-sm leading-6 text-gray-400">
+                    <p className="text-clip text-sm leading-6 text-gray-400">
                       {imageFilename}
                     </p>
                     <button
