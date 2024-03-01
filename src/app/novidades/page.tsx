@@ -8,6 +8,10 @@ export default function NewsPage() {
       <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
         <article className="prose prose-invert md:prose-lg prose-img:mx-auto">
           <h1>Notas de atualização do site</h1>
+          <p>Março de 2024:</p>
+          <ul>
+            <li>Agora é possível adicionar um logo para sua miniatura! 👺</li>
+          </ul>
           <p>Setembro de 2023:</p>
           <ul>
             <li>
