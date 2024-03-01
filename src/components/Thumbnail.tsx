@@ -8,6 +8,7 @@ interface Props {
   title: string;
   color: string;
   fontName: string;
+  logo?: string;
 }
 
 // TODO: refactor this
@@ -43,6 +44,15 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
             width="1280"
             height="720"
             src={props.image}
+            alt=""
+          />
+        ) : null}
+        {props.logo ? (
+          <Image
+            className="h-15 w-15 absolute left-1 top-1 z-10 object-contain md:h-28 md:w-28"
+            width="60"
+            height="60"
+            src={props.logo}
             alt=""
           />
         ) : null}

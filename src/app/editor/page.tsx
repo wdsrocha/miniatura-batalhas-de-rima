@@ -29,7 +29,9 @@ const slugify = (s: string) =>
 export default function EditorPage() {
   const thumbnailRef = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState<string | null>(null);
+  const [logo, setLogo] = useState<string | null>(null);
   const [imageFilename, setImageFilename] = useState("");
+  const [logoFilename, setLogoFilename] = useState("");
   const [title, setTitle] = useState("");
   const [color, setColor] = usePersistedState<string>(COLORS[0].value, "color");
   const [selectedFont, setSelectedFont] = usePersistedState(
@@ -71,6 +73,20 @@ export default function EditorPage() {
     setShowCropper(true);
   };
 
+  const handleLogoFiles = (files: FileList | null) => {
+    if (!files?.length) {
+      return;
+    }
+
+    const file = files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setLogo(event.target?.result as string);
+    };
+    reader.readAsDataURL(file as Blob);
+    setLogoFilename(file.name);
+  };
+
   if (!image) {
     return (
       <>
@@ -78,6 +94,7 @@ export default function EditorPage() {
         <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center">
             <Upload
+              id="startimage"
               handleFiles={handleFiles}
               label="Escolha uma imagem para começar"
             />
@@ -96,6 +113,7 @@ export default function EditorPage() {
             ref={thumbnailRef}
             image={croppedImage || undefined}
             title={title}
+            logo={logo || undefined}
             fontName={selectedFont}
             color={color}
           />
@@ -105,50 +123,87 @@ export default function EditorPage() {
               event.preventDefault();
             }}
           >
-            <div className="space-y-2">
-              <Upload handleFiles={handleFiles} label="Trocar imagem" />
-
-              {imageFilename && (
-                <div className="flex items-center justify-start space-x-2">
-                  <p className="text-sm leading-6 text-gray-400">
-                    {imageFilename}
-                  </p>
-                  <button
-                    type="button"
-                    className={cn(
-                      "inline-flex items-center rounded-md px-1 py-1 text-sm font-semibold text-white shadow-sm hover:bg-white/20",
-                      "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                    )}
-                    onClick={() => {
-                      setShowCropper(true);
-                    }}
-                  >
-                    <PencilIcon
-                      className="-ml-0.4 h-4 w-4 text-gray-400 "
-                      aria-hidden="true"
-                    />
-                    <span className="sr-only">Editar recorte</span>
-                  </button>
-                  <button
-                    type="button"
-                    className={cn(
-                      "inline-flex items-center rounded-md px-1 py-1 text-sm font-semibold text-white shadow-sm hover:bg-white/20",
-                      "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                    )}
-                    onClick={() => {
-                      setImage(null);
-                      setCroppedImage(null);
-                      setImageFilename("");
-                    }}
-                  >
-                    <TrashIcon
-                      className="-ml-0.4 h-4 w-4 text-gray-400"
-                      aria-hidden="true"
-                    />
-                    <span className="sr-only">Apagar imagem</span>
-                  </button>
-                </div>
-              )}
+            <div className="items-top flex space-x-8">
+              <div className="space-y-2">
+                <Upload
+                  id="image"
+                  handleFiles={handleFiles}
+                  label="Trocar imagem"
+                />
+                {imageFilename && (
+                  <div className="flex items-center justify-start space-x-2">
+                    <p className="text-sm leading-6 text-gray-400">
+                      {imageFilename}
+                    </p>
+                    <button
+                      type="button"
+                      className={cn(
+                        "inline-flex items-center rounded-md px-1 py-1 text-sm font-semibold text-white shadow-sm hover:bg-white/20",
+                        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                      )}
+                      onClick={() => {
+                        setShowCropper(true);
+                      }}
+                    >
+                      <PencilIcon
+                        className="-ml-0.4 h-4 w-4 text-gray-400 "
+                        aria-hidden="true"
+                      />
+                      <span className="sr-only">Editar recorte</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={cn(
+                        "inline-flex items-center rounded-md px-1 py-1 text-sm font-semibold text-white shadow-sm hover:bg-white/20",
+                        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                      )}
+                      onClick={() => {
+                        setImage(null);
+                        setCroppedImage(null);
+                        setImageFilename("");
+                      }}
+                    >
+                      <TrashIcon
+                        className="-ml-0.4 h-4 w-4 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <span className="sr-only">Apagar imagem</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+              <div className="h-16 w-px bg-white/10"></div>
+              <div className="space-y-2">
+                <Upload
+                  id="logo"
+                  handleFiles={handleLogoFiles}
+                  label={logoFilename ? "Trocar logo" : "Adicionar logo"}
+                />
+                {logoFilename && (
+                  <div className="flex items-center justify-start space-x-2">
+                    <p className="text-sm leading-6 text-gray-400">
+                      {logoFilename}
+                    </p>
+                    <button
+                      type="button"
+                      className={cn(
+                        "inline-flex items-center rounded-md px-1 py-1 text-sm font-semibold text-white shadow-sm hover:bg-white/20",
+                        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                      )}
+                      onClick={() => {
+                        setLogo(null);
+                        setLogoFilename("");
+                      }}
+                    >
+                      <TrashIcon
+                        className="-ml-0.4 h-4 w-4 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <span className="sr-only">Apagar logo</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
             <Input

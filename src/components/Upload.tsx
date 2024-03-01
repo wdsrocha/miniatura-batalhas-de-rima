@@ -3,6 +3,7 @@ import cn from "classnames";
 import { ChangeEvent } from "react";
 
 interface Props {
+  id: string;
   label: string;
   handleFiles: (files: FileList | null) => void;
 }
@@ -21,7 +22,7 @@ export const Upload = (props: Props) => {
 
   return (
     <div className="space-y-2">
-      <label htmlFor="image">
+      <label htmlFor={props.id}>
         <span
           role="button"
           aria-controls="filename"
@@ -38,8 +39,8 @@ export const Upload = (props: Props) => {
       </label>
       <input
         tabIndex={-1}
-        id="image"
-        name="image"
+        id={props.id}
+        name={props.id}
         type="file"
         accept="image/*"
         className="sr-only"
