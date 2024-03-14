@@ -90,8 +90,18 @@ export default function AboutPage() {
               </a>
             </li>
             <li>
-              <a href="https://www.youtube.com/@batalhadasmina_am">
-                Batalha das Minas - Manaus AM
+              <a href="https://www.youtube.com/@batalhadadiversidade_am">
+                Batalha da Diversidade - Manaus AM
+              </a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/@batalhadovale2023">
+                Batalha do Vale - Manaus AM
+              </a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/@BatalhadaDimas-oy7pr">
+                Batalha da Dimas - Brasília DF
               </a>
             </li>
           </ul>
