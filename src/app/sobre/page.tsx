@@ -80,8 +80,8 @@ export default function AboutPage() {
           </p>
           <ul>
             <li>
-              <a href="https://www.youtube.com/@batalhadalaprata">
-                Batalha da La Prata - Manaus AM
+              <a href="https://www.youtube.com/@batalhadamalta">
+                Batalha da Malta (antiga La Prata) - Manaus AM
               </a>
             </li>
             <li>
