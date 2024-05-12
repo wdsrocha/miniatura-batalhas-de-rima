@@ -1,3 +1,4 @@
+import { Title } from "./Title";
 import { borders, Border } from "@/lib/borders";
 import { fonts } from "@/lib/fonts";
 import cn from "classnames";
@@ -13,22 +14,10 @@ interface Props {
   border: Border["type"];
 }
 
-// TODO: refactor this
-const withSpacing = (i: number, s: string) => {
-  if (i === 0) {
-    return `${s}`;
-  } else {
-    return ` ${s}`;
-  }
-};
-
 export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
   props: Props,
   ref
 ) {
-  const tokens = props.title.toLocaleUpperCase().split(" ");
-  const id = useId();
-
   const font = fonts[props.fontName];
   const border = borders[props.border];
 
@@ -67,24 +56,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
             "absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap uppercase text-white"
           )}
         >
-          {tokens.map((token, i) => {
-            if (token === "X" || token === "VS") {
-              return (
-                <span key={i} style={{ color: props.color }}>
-                  {withSpacing(i, token)}
-                </span>
-              );
-            } else if (token.match(/^\*.+\*$/)) {
-              const trimmedToken = token.slice(1, -1);
-              return (
-                <span key={i} style={{ color: props.color }}>
-                  {withSpacing(i, trimmedToken)}
-                </span>
-              );
-            } else {
-              return <span key={i}>{withSpacing(i, token)}</span>;
-            }
-          })}
+          <Title text={props.title} color={props.color} />
         </div>
       </div>
     </div>
