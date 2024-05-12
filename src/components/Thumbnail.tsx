@@ -34,8 +34,8 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
       <div
         style={{ borderColor: props.color }}
         className={cn(
-          "relative h-[180px] w-[320px] overflow-hidden border-4 md:h-[360px] md:w-[640px]",
-          "via-23% bg-gradient-to-t from-black via-black/90 to-transparent to-40%"
+          "relative h-[180px] w-[320px] overflow-hidden border-2 md:h-[360px] md:w-[640px] md:border-4",
+          "via-18% bg-gradient-to-t from-black via-black/90 to-transparent to-35%"
         )}
       >
         {props.image ? (
