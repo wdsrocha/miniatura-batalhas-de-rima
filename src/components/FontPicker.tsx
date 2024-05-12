@@ -44,7 +44,8 @@ export const FontPicker = (props: Props) => {
                 as="span"
                 className={cn(
                   font.baseTokens,
-                  "rounded text-sm font-semibold uppercase tracking-wider text-white"
+                  font.presentationTokens,
+                  "rounded text-lg font-semibold uppercase tracking-wider text-white"
                 )}
               >
                 {font.label}

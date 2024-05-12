@@ -5,6 +5,9 @@ export type Font = {
   label: string;
   baseTokens: string;
   sizeTokens: string;
+  // Used in the font picker
+  // Sometimes the defaults are unreadable, so extra tokens are needed
+  presentationTokens?: string;
 };
 
 const pineforestFont = localFont({
@@ -42,12 +45,14 @@ export const fonts: Record<string, Font> = {
     label: "delirium",
     baseTokens: cn(deliriumFont.className, deliriumFont.variable),
     sizeTokens: "text-4xl md:text-7xl md:mb-2",
+    presentationTokens: "mt-1.5",
   },
 
   headliner: {
     label: "headliner",
     baseTokens: cn(headlinerFont.className, headlinerFont.variable),
     sizeTokens: "text-4xl md:text-7xl md:mb-2",
+    presentationTokens: "mt-1.5",
   },
   yulong: {
     label: "Yulong",
@@ -58,11 +63,13 @@ export const fonts: Record<string, Font> = {
     label: "Blocky",
     baseTokens: cn(blockyFont.className, blockyFont.variable),
     sizeTokens: "text-4xl mb-0.5 md:text-7xl md:mb-4",
+    presentationTokens: "mt-0.5",
   },
   brookline: {
     label: "brookline",
     baseTokens: cn(brooklineFont.className, brooklineFont.variable),
     sizeTokens: "text-3xl md:text-6xl md:mb-3 tracking-tight",
+    presentationTokens: "text-sm mt-1.5",
   },
   pineforest: {
     label: "Pineforest",
