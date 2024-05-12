@@ -56,30 +56,30 @@ export const fonts: Record<string, Font> = {
   headliner: {
     label: "headliner",
     baseTokens: cn(headlinerFont.className, headlinerFont.variable),
-    sizeTokens: "text-4xl md:text-7xl md:mb-2",
+    sizeTokens: "text-3xl md:text-6xl md:mb-3",
     presentationTokens: "mt-1.5",
   },
   yulong: {
     label: "Yulong",
     baseTokens: cn(yulongFont.className, yulongFont.variable),
-    sizeTokens: "mb-1 text-4xl md:text-7xl md:mb-4 tracking-tight",
+    sizeTokens: "mb-1 text-3xl md:text-6xl md:mb-5 tracking-tight",
   },
   blocky: {
     label: "Blocky",
     baseTokens: cn(blockyFont.className, blockyFont.variable),
-    sizeTokens: "text-4xl mb-0.5 md:text-7xl md:mb-4",
+    sizeTokens: "text-3xl mb-0.5 md:text-6xl md:mb-5",
     presentationTokens: "mt-0.5",
   },
   brookline: {
     label: "brookline",
     baseTokens: cn(brooklineFont.className, brooklineFont.variable),
-    sizeTokens: "text-3xl md:text-6xl md:mb-3 tracking-tight",
+    sizeTokens: "text-2xl md:text-5xl md:mb-4 tracking-tight",
     presentationTokens: "text-sm mt-1.5",
   },
   pineforest: {
     label: "Pineforest",
     baseTokens: cn(pineforestFont.className, pineforestFont.variable),
-    sizeTokens: "text-4xl mb-1 md:text-7xl md:mb-4",
+    sizeTokens: "text-3xl mb-1 md:text-6xl md:mb-5",
   },
   humane: {
     label: "Humane",
