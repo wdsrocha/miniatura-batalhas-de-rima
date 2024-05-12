@@ -1,3 +1,4 @@
+import { borders, Border } from "@/lib/borders";
 import { fonts } from "@/lib/fonts";
 import cn from "classnames";
 import Image from "next/image";
@@ -9,6 +10,7 @@ interface Props {
   color: string;
   fontName: string;
   logo?: string;
+  border: Border["type"];
 }
 
 // TODO: refactor this
@@ -28,13 +30,15 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
   const id = useId();
 
   const font = fonts[props.fontName];
+  const border = borders[props.border];
 
   return (
     <div data-test="thumbnail-frame" ref={ref}>
       <div
-        style={{ borderColor: props.color }}
+        style={{ borderColor: props.color, outlineColor: props.color }}
         className={cn(
-          "relative h-[180px] w-[320px] overflow-hidden border-2 md:h-[360px] md:w-[640px] md:border-4",
+          border.tokens,
+          "relative h-[180px] w-[320px] overflow-hidden md:h-[360px] md:w-[640px] ",
           "via-18% bg-gradient-to-t from-black via-black/90 to-transparent to-35%"
         )}
       >
@@ -49,7 +53,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
         ) : null}
         {props.logo ? (
           <Image
-            className="h-15 w-15 absolute left-1 top-1 z-10 object-contain md:h-28 md:w-28"
+            className="h-15 w-15 absolute left-3 top-3 z-10 object-contain md:h-28 md:w-28"
             width="60"
             height="60"
             src={props.logo}

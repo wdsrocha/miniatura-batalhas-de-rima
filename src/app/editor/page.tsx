@@ -1,5 +1,6 @@
 "use client";
 
+import { BorderPicker } from "@/components/BorderPicker";
 import { COLORS, ColorPicker } from "@/components/ColorPicker";
 import { FontPicker } from "@/components/FontPicker";
 import { Input } from "@/components/Input";
@@ -8,6 +9,7 @@ import { Navbar } from "@/components/Navbar";
 import { SuccessToast } from "@/components/SuccessToast";
 import { Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
+import { Border } from "@/lib/borders";
 import { fonts } from "@/lib/fonts";
 import { usePersistedState } from "@/lib/usePersistedState";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
@@ -39,6 +41,10 @@ export default function EditorPage() {
   const [selectedFont, setSelectedFont] = usePersistedState(
     Object.keys(fonts)[0],
     "font"
+  );
+  const [border, setBorder] = usePersistedState<Border["type"]>(
+    "default",
+    "border"
   );
   const [showCropper, setShowCropper] = useState(false);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
@@ -126,6 +132,7 @@ export default function EditorPage() {
             logo={logo || undefined}
             fontName={selectedFont}
             color={color}
+            border={border}
           />
           <form
             className="w-full space-y-8"
@@ -233,6 +240,8 @@ export default function EditorPage() {
             />
 
             <ColorPicker value={color} onChange={setColor} />
+
+            <BorderPicker selectedBorder={border} onChange={setBorder} />
 
             <hr className="border-white/10" />
 
