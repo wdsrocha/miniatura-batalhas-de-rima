@@ -12,11 +12,11 @@ export default function AboutPage() {
             Todas as semanas centenas de batalhas de rima acontecem no Brasil e
             uma parte consideravel destas batalhas são postadas no YouTube. Como
             membro da organização de uma batalha (
-            <a href="https://instagram.com/bdlaprata/">@bdlaprata</a>), sei que
-            é trabalhoso gerar boas miniaturas/thumbnails para aumentar o
-            alcance das publicações. Subimos em média 15 vídeos por semana, isto
-            é, em média 15 edições de imagem para contemplar todas as
-            miniaturas.
+            <a href="https://instagram.com/batalhadamalta/">@batalhadamalta</a>
+            ), sei que é trabalhoso gerar boas miniaturas/thumbnails para
+            aumentar o alcance das publicações. Subimos em média 15 vídeos por
+            semana, isto é, em média 15 edições de imagem para contemplar todas
+            as miniaturas.
           </p>
           <p>
             A motivação deste site é tornar a criação de miniaturas de vídeo
