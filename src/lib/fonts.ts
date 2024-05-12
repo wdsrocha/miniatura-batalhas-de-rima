@@ -40,6 +40,11 @@ const headlinerFont = localFont({
   variable: "--font-headliner",
 });
 
+const humaneFont = localFont({
+  src: "../../public/fonts/humane.ttf",
+  variable: "--font-humane",
+});
+
 export const fonts: Record<string, Font> = {
   delirium: {
     label: "delirium",
@@ -75,5 +80,11 @@ export const fonts: Record<string, Font> = {
     label: "Pineforest",
     baseTokens: cn(pineforestFont.className, pineforestFont.variable),
     sizeTokens: "text-4xl mb-1 md:text-7xl md:mb-4",
+  },
+  humane: {
+    label: "Humane",
+    baseTokens: cn(humaneFont.className, humaneFont.variable),
+    sizeTokens: "text-4xl md:text-7xl md:mb-2 tracking-wide ",
+    presentationTokens: "text-xl mt-0.5 tracking-widest font-normal  ",
   },
 };
