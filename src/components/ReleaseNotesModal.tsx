@@ -76,7 +76,10 @@ export const ReleaseNotesModal = (props: Props) => {
                           <h3>{formatDate(item.date)}</h3>
                           <ul>
                             {item.notes.map((note, j) => (
-                              <li key={j}>{note}</li>
+                              <li
+                                key={j}
+                                dangerouslySetInnerHTML={{ __html: note }}
+                              />
                             ))}
                           </ul>
                         </div>

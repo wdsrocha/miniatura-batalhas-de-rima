@@ -15,15 +15,19 @@ export const formatDate = (date: string) => {
   });
 };
 
-export const releaseNotes = [
+interface ReleaseNote {
+  date: string;
+  notes: string[];
+}
+
+export const releaseNotes: ReleaseNote[] = [
   {
     date: "2024-05-12",
     notes: [
-      "Citações de frases na batalha podem ser usadas como título, basta adicionar aspas no ínicio e final da frase 🗣️",
-      "Alteração da forma como eram inseridos os destaques com asterísco no título. Antes só era possível destacar uma palavra por vez e com espaço ao redor, agora é só colocar asteriscos ao redor do que precisa ser destacado ✨",
-      "Múltiplos tipos de borda estão disponíveis! Borda padrão, interna ou sem borda 🖼️",
-      "Nova fonte adicionada (HUMANE)",
-      "Redução no tamanho das fontes",
+      "Opção de adicionar bordas diferentes e texturas granuladas. Experimente as combinações! 🖼️",
+      "Melhorias na forma de inserir destaques com asteriscos. Não é mais limitado por uma única palavra por vez e nem requer espaço antes e depois do asterisco. Exemplo que funciona agora: <i>Desafiou o *Big Mike*?</i>",
+      'Às vezes é interessante adicionar uma punch da batalha como título. Agora é possível inserir aspas duplas no início e no final do título para enfatizar esse tipo de citação! Exemplo: <i>"Quem é o maior campeão mesmo?"</i>',
+      'Redução no tamanho das fontes e adição de uma nova fonte ("humane")',
     ],
   },
   {
