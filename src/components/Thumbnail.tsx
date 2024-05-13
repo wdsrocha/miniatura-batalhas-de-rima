@@ -1,6 +1,7 @@
 import { Title } from "./Title";
 import { borders, Border } from "@/lib/borders";
 import { fonts } from "@/lib/fonts";
+import { Grain, grains } from "@/lib/grains";
 import cn from "classnames";
 import Image from "next/image";
 import { forwardRef, useId } from "react";
@@ -12,6 +13,7 @@ interface Props {
   fontName: string;
   logo?: string;
   border: Border["type"];
+  grain: Grain["type"];
 }
 
 export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
@@ -20,6 +22,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
 ) {
   const font = fonts[props.fontName];
   const border = borders[props.border];
+  const grain = grains[props.grain];
 
   return (
     <div data-test="thumbnail-frame" ref={ref}>
@@ -46,6 +49,15 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
             width="60"
             height="60"
             src={props.logo}
+            alt=""
+          />
+        ) : null}
+        {grain.image ? (
+          <Image
+            width="1280"
+            height="720"
+            className={cn("absolute left-0 top-0", grain.tokens)}
+            src={grain.image}
             alt=""
           />
         ) : null}

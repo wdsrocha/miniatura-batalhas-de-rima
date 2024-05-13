@@ -3,6 +3,7 @@
 import { BorderPicker } from "@/components/BorderPicker";
 import { COLORS, ColorPicker } from "@/components/ColorPicker";
 import { FontPicker } from "@/components/FontPicker";
+import { GrainPicker } from "@/components/GrainPicker";
 import { ImageCropperModal } from "@/components/ImageCropperModal";
 import { Input } from "@/components/Input";
 import { Navbar } from "@/components/Navbar";
@@ -12,6 +13,7 @@ import { Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
 import { Border } from "@/lib/borders";
 import { fonts } from "@/lib/fonts";
+import { Grain } from "@/lib/grains";
 import { getUnseenReleaseNotes, releaseNotes } from "@/lib/releaseNotes";
 import { usePersistedState } from "@/lib/usePersistedState";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
@@ -48,6 +50,7 @@ export default function EditorPage() {
     "default",
     "border"
   );
+  const [grain, setGrain] = usePersistedState<Grain["type"]>("none", "grain");
   const [showCropper, setShowCropper] = useState(false);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -162,6 +165,7 @@ export default function EditorPage() {
             fontName={selectedFont}
             color={color}
             border={border}
+            grain={grain}
           />
           <form
             className="w-full space-y-8"
@@ -273,6 +277,8 @@ export default function EditorPage() {
             <ColorPicker value={color} onChange={setColor} />
 
             <BorderPicker selectedBorder={border} onChange={setBorder} />
+
+            <GrainPicker selected={grain} onChange={setGrain} />
 
             <hr className="border-white/10" />
 
