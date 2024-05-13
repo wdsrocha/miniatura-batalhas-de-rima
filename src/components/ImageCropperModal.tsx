@@ -10,7 +10,7 @@ interface Props {
   onSave: (croppedImage: string) => void;
 }
 
-export const Modal = (props: Props) => {
+export const ImageCropperModal = (props: Props) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({

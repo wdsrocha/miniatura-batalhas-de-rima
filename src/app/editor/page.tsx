@@ -3,19 +3,21 @@
 import { BorderPicker } from "@/components/BorderPicker";
 import { COLORS, ColorPicker } from "@/components/ColorPicker";
 import { FontPicker } from "@/components/FontPicker";
+import { ImageCropperModal } from "@/components/ImageCropperModal";
 import { Input } from "@/components/Input";
-import { Modal } from "@/components/Modal";
 import { Navbar } from "@/components/Navbar";
+import { ReleaseNotesModal } from "@/components/ReleaseNotesModal";
 import { SuccessToast } from "@/components/SuccessToast";
 import { Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
 import { Border } from "@/lib/borders";
 import { fonts } from "@/lib/fonts";
+import { getUnseenReleaseNotes, releaseNotes } from "@/lib/releaseNotes";
 import { usePersistedState } from "@/lib/usePersistedState";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import cn from "classnames";
 import { toPng } from "html-to-image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const MAX_FILENAME_LENGTH = 20;
 
@@ -48,7 +50,28 @@ export default function EditorPage() {
   );
   const [showCropper, setShowCropper] = useState(false);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [lastVisited, setLastVisited] = usePersistedState(
+    new Date().toISOString(),
+    "lastVisited"
+  );
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+
+  useEffect(() => {
+    const unseenReleaseNotes = getUnseenReleaseNotes(lastVisited);
+    if (unseenReleaseNotes.length > 0) {
+      setShowWelcomeModal(true);
+    }
+  }, [lastVisited, setLastVisited]);
+
+  const onCloseReleaseNotesModal = () => {
+    setShowWelcomeModal(false);
+
+    // Set a timeout so the content does not disappear during close animation
+    setTimeout(() => {
+      setLastVisited(new Date().toISOString());
+    }, 1_000);
+  };
 
   const exportImage = async () => {
     if (thumbnailRef.current) {
@@ -61,7 +84,7 @@ export default function EditorPage() {
       link.href = base64image;
       link.click();
 
-      setShowSuccessModal(true);
+      setShowSuccessToast(true);
     }
   };
 
@@ -116,6 +139,12 @@ export default function EditorPage() {
             />
           </div>
         </main>
+
+        <ReleaseNotesModal
+          lastVisited={lastVisited}
+          open={showWelcomeModal}
+          onClose={onCloseReleaseNotesModal}
+        />
       </>
     );
   }
@@ -228,8 +257,10 @@ export default function EditorPage() {
               label="Título"
               placeholder="Emicida X Negra Re"
               description={`"X" e "VS" são destacados automaticamente. Para
-              destacar outras palavras, insira um asterisco antes e depois da
-              palavra. Exemplo: Grande *Final*`}
+              destacar outras palavras, insira um asterisco antes e depois da(s)
+              palavra(s). Exemplo: Grande *Final*. Também é possível entrar no
+              modo itálico ao iniciar e terminar o título com aspas. Exemplo:
+              "Quem é o maior campeão?"`}
               value={title}
               onChange={(event) => setTitle(event.target.value)}
             />
@@ -255,13 +286,13 @@ export default function EditorPage() {
           </form>
         </div>
       </main>
-      <Modal
+      <ImageCropperModal
         open={showCropper}
         setOpen={setShowCropper}
         image={image}
         onSave={(croppedImage) => setCroppedImage(croppedImage)}
       />
-      <SuccessToast show={showSuccessModal} setShow={setShowSuccessModal} />
+      <SuccessToast show={showSuccessToast} setShow={setShowSuccessToast} />
     </>
   );
 }

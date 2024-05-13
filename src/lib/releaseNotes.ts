@@ -1,3 +1,20 @@
+export const getUnseenReleaseNotes = (lastVisited: string) => {
+  const lastVisitedDate = new Date(lastVisited);
+  return releaseNotes.filter(
+    (releaseNote) => new Date(releaseNote.date) > lastVisitedDate
+  );
+};
+
+export const formatDate = (date: string) => {
+  const d = new Date(date);
+  return d.toLocaleDateString("pt-BR", {
+    timeZone: "UTC",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+};
+
 export const releaseNotes = [
   {
     date: "2024-05-12",
