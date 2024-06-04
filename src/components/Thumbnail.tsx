@@ -67,6 +67,12 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
             font.sizeTokens,
             "absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap uppercase text-white"
           )}
+          style={
+            // unused for now, but useful for future multiline text
+            {
+              textWrap: "balance",
+            } as React.CSSProperties
+          }
         >
           <Title text={props.title} color={props.color} />
         </div>
