@@ -15,7 +15,7 @@ export const borders: Record<string, Border> = {
     type: "inner",
     label: "Interna",
     tokens:
-      "outline outline-2 -outline-offset-4 md:outline-[3px] md:-outline-offset-[10px]",
+      "outline outline-2 -outline-offset-[7px] md:outline-[4px] md:-outline-offset-[14px]",
   },
   none: {
     type: "none",
