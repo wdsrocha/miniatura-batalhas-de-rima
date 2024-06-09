@@ -65,7 +65,7 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
           className={cn(
             font.baseTokens,
             font.sizeTokens,
-            "absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap uppercase text-white"
+            "absolute bottom-0 left-1/2 w-full -translate-x-1/2 whitespace-nowrap text-center uppercase text-white"
           )}
           style={
             // unused for now, but useful for future multiline text
