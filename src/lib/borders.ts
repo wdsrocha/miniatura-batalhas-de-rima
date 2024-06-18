@@ -8,8 +8,7 @@ export const borders: Record<string, Border> = {
   default: {
     type: "default",
     label: "Normal",
-    tokens:
-      "outline outline-2 -outline-offset-2 md:outline-4 md:-outline-offset-4",
+    tokens: "border border-2 -border-offset-2 md:border-4 md:-border-offset-4",
   },
   inner: {
     type: "inner",

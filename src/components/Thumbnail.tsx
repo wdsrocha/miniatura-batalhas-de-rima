@@ -27,7 +27,9 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
   return (
     <div data-test="thumbnail-frame" ref={ref}>
       <div
-        style={{ borderColor: props.color, outlineColor: props.color }}
+        style={{
+          borderImage: `linear-gradient(to right, #0800e9, #fb192a) 1`,
+        }}
         className={cn(
           border.tokens,
           "relative h-[180px] w-[320px] overflow-hidden md:h-[360px] md:w-[640px] ",
