@@ -7,6 +7,7 @@ interface Props {
   label: string;
   placeholder?: string;
   description?: string;
+  warning?: string;
 
   value: string;
   onChange: InputHTMLAttributes<HTMLInputElement>["onChange"];
@@ -56,5 +57,6 @@ export const Input = (props: Props) => (
       value={props.value}
       onChange={props.onChange}
     />
+    {props.warning && <p className="text-sm text-red-400">{props.warning}</p>}
   </div>
 );

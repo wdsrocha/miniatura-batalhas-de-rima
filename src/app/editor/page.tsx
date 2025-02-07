@@ -2,6 +2,7 @@
 
 import { BorderPicker } from "@/components/BorderPicker";
 import { COLORS, ColorPicker } from "@/components/ColorPicker";
+import { FailToast } from "@/components/FailToast";
 import { FontPicker } from "@/components/FontPicker";
 import { GrainPicker } from "@/components/GrainPicker";
 import { ImageCropperModal } from "@/components/ImageCropperModal";
@@ -54,6 +55,7 @@ export default function EditorPage() {
   const [showCropper, setShowCropper] = useState(false);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showFailToast, setShowFailToast] = useState(false);
   const [lastVisited, setLastVisited] = usePersistedState(
     new Date().toISOString(),
     "lastVisited"
@@ -77,7 +79,11 @@ export default function EditorPage() {
   };
 
   const exportImage = async () => {
-    if (thumbnailRef.current) {
+    if (!thumbnailRef.current) {
+      return;
+    }
+
+    try {
       // Why the hell it exports in the intended size? In the code, the image is
       // 640x360, but after exporting, it changes to 1280x720. This is intended,
       // but not expected. TODO: verify if I can trust this magic behavior
@@ -88,6 +94,9 @@ export default function EditorPage() {
       link.click();
 
       setShowSuccessToast(true);
+    } catch (error) {
+      console.error(error);
+      setShowFailToast(true);
     }
   };
 
@@ -266,6 +275,11 @@ export default function EditorPage() {
               modo itálico ao iniciar e terminar o título com aspas. Exemplo:
               "Quem é o maior campeão?"`}
               value={title}
+              warning={
+                /\p{Extended_Pictographic}/u.test(title)
+                  ? "Atualmente, não é possível salvar uma thumbnail com emojis. Caso queira utilizar mesmo assim, tire um print da tela."
+                  : ""
+              }
               onChange={(event) => setTitle(event.target.value)}
             />
 
@@ -299,6 +313,7 @@ export default function EditorPage() {
         onSave={(croppedImage) => setCroppedImage(croppedImage)}
       />
       <SuccessToast show={showSuccessToast} setShow={setShowSuccessToast} />
+      <FailToast show={showFailToast} setShow={setShowFailToast} />
     </>
   );
 }
