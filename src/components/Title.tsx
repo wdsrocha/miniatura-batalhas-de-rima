@@ -1,5 +1,8 @@
 import { HTMLAttributes } from "react";
 
+const LEFT_DOUBLE_QUOTE = "\u201c"; // “
+const RIGHT_DOUBLE_QUOTE = "\u201d"; // ”
+
 interface Props {
   text: string;
   color: string;
@@ -49,7 +52,7 @@ function addAttributesBetweenQuotationMarks(
     attributes = text.split("").map((c) => ({}));
   }
 
-  if (text.startsWith("“") && text.endsWith("”")) {
+  if (text.startsWith(LEFT_DOUBLE_QUOTE) && text.endsWith(RIGHT_DOUBLE_QUOTE)) {
     for (let i = 0; i < text.length; i++) {
       attributes[i] = {
         ...attributes[i],
@@ -61,12 +64,44 @@ function addAttributesBetweenQuotationMarks(
   return attributes;
 }
 
+function groupAttributesByChunks(
+  text: string,
+  attributes: HTMLAttributes<HTMLSpanElement>[]
+) {
+  const chunks: { text: string; attributes: HTMLAttributes<HTMLSpanElement> }[] = [];
+
+  if (text.length === 0) return chunks;
+
+  let currentChunk = {
+    text: text[0],
+    attributes: attributes[0]
+  };
+
+  for (let i = 1; i < text.length; i++) {
+    const isSameAttributes = JSON.stringify(attributes[i]) === JSON.stringify(currentChunk.attributes);
+
+    if (isSameAttributes) {
+      currentChunk.text += text[i];
+    } else {
+      chunks.push(currentChunk);
+      currentChunk = {
+        text: text[i],
+        attributes: attributes[i]
+      };
+    }
+  }
+
+  chunks.push(currentChunk);
+
+  return chunks;
+}
+
 export const Title = (props: Props) => {
   const text = props.text
     .toLocaleUpperCase()
     .replace(/ (VS|X) /g, " *$1* ")
-    .replace(/^"/g, "“")
-    .replace(/"$/g, "”");
+    .replace(/^"/g, LEFT_DOUBLE_QUOTE)
+    .replace(/"$/g, RIGHT_DOUBLE_QUOTE);
 
   let attributes: HTMLAttributes<HTMLSpanElement>[] = text
     .split("")
@@ -75,11 +110,13 @@ export const Title = (props: Props) => {
   attributes = addAttributesBetweenAsterisks(text, props.color, attributes);
   attributes = addAttributesBetweenQuotationMarks(text, attributes);
 
+  const chunks = groupAttributesByChunks(text, attributes);
+
   return (
     <>
-      {text.split("").map((c, i) => (
-        <span key={i} {...attributes[i]}>
-          {c}
+      {chunks.map((chunk, i) => (
+        <span key={i} {...chunk.attributes}>
+          {chunk.text}
         </span>
       ))}
     </>

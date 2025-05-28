@@ -275,11 +275,6 @@ export default function EditorPage() {
               modo itálico ao iniciar e terminar o título com aspas. Exemplo:
               "Quem é o maior campeão?"`}
               value={title}
-              warning={
-                /\p{Extended_Pictographic}/u.test(title)
-                  ? "Atualmente, não é possível salvar uma thumbnail com emojis. Caso queira utilizar mesmo assim, tire um print da tela."
-                  : ""
-              }
               onChange={(event) => setTitle(event.target.value)}
             />
 
