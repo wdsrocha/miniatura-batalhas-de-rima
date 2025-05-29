@@ -22,6 +22,12 @@ interface ReleaseNote {
 
 export const releaseNotes: ReleaseNote[] = [
   {
+    date: "2025-05-28",
+    notes: [
+      "Corrigido o bug que não permitia adicionar emojis no título. Use quantos quiser! 🎉😃🔥✨",
+    ],
+  },
+  {
     date: "2024-05-12",
     notes: [
       "Opção de adicionar bordas diferentes e texturas granuladas. Experimente as combinações! 🖼️",
