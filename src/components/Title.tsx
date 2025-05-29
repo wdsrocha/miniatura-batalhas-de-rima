@@ -2,6 +2,7 @@ import { HTMLAttributes } from "react";
 
 const LEFT_DOUBLE_QUOTE = "\u201c"; // “
 const RIGHT_DOUBLE_QUOTE = "\u201d"; // ”
+const VS_PATTERN = / (VS|X) /g;
 
 interface Props {
   text: string;
@@ -26,7 +27,6 @@ function addAttributesBetweenAsterisks(
       if (j === text.length) {
         break;
       }
-      const match = text.slice(i, j + 1);
 
       attributes[i] = { ...attributes[i], hidden: true };
       attributes[j] = { ...attributes[j], hidden: true };
@@ -36,7 +36,6 @@ function addAttributesBetweenAsterisks(
           style: { ...attributes[k].style, color },
         };
       }
-      console.log(match);
       i = j;
     }
   }
@@ -64,6 +63,17 @@ function addAttributesBetweenQuotationMarks(
   return attributes;
 }
 
+function areAttributesEqual(
+  a: HTMLAttributes<HTMLSpanElement>,
+  b: HTMLAttributes<HTMLSpanElement>
+): boolean {
+  // Simple shallow comparison for the attributes we care about
+  return (
+    a.hidden === b.hidden &&
+    JSON.stringify(a.style) === JSON.stringify(b.style)
+  );
+}
+
 function groupAttributesByChunks(
   text: string,
   attributes: HTMLAttributes<HTMLSpanElement>[]
@@ -78,7 +88,7 @@ function groupAttributesByChunks(
   };
 
   for (let i = 1; i < text.length; i++) {
-    const isSameAttributes = JSON.stringify(attributes[i]) === JSON.stringify(currentChunk.attributes);
+    const isSameAttributes = areAttributesEqual(attributes[i], currentChunk.attributes);
 
     if (isSameAttributes) {
       currentChunk.text += text[i];
@@ -99,7 +109,7 @@ function groupAttributesByChunks(
 export const Title = (props: Props) => {
   const text = props.text
     .toLocaleUpperCase()
-    .replace(/ (VS|X) /g, " *$1* ")
+    .replace(VS_PATTERN, " *$1* ")
     .replace(/^"/g, LEFT_DOUBLE_QUOTE)
     .replace(/"$/g, RIGHT_DOUBLE_QUOTE);
 
