@@ -40,7 +40,12 @@ export default function EditorPage() {
   const [image, setImage] = useState<string | null>(null);
   const [imageFilename, setImageFilename] = useState("");
   const [logo, setLogo] = usePersistedState<string | null>(null, "logo");
+  const [logo2, setLogo2] = usePersistedState<string | null>(null, "logo2");
   const [logoFilename, setLogoFilename] = usePersistedState("", "logoFilename");
+  const [logo2Filename, setLogo2Filename] = usePersistedState(
+    "",
+    "logo2Filename"
+  );
   const [title, setTitle] = useState("");
   const [color, setColor] = usePersistedState<string>(COLORS[0].value, "color");
   const [selectedFont, setSelectedFont] = usePersistedState(
@@ -67,7 +72,7 @@ export default function EditorPage() {
     if (unseenReleaseNotes.length > 0) {
       setShowWelcomeModal(true);
     }
-  }, [lastVisited, setLastVisited]);
+  }, [lastVisited]);
 
   const onCloseReleaseNotesModal = () => {
     setShowWelcomeModal(false);
@@ -138,6 +143,25 @@ export default function EditorPage() {
     );
   };
 
+  const handleLogo2Files = (files: FileList | null) => {
+
+    if (!files?.length) {
+      return;
+    }
+
+    const file = files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setLogo2(event.target?.result as string);
+    };
+    reader.readAsDataURL(file as Blob);
+    setLogo2Filename(
+      file.name.length > MAX_FILENAME_LENGTH
+        ? file.name.slice(0, MAX_FILENAME_LENGTH) + "..."
+        : file.name
+    );
+  };
+
   if (!image) {
     return (
       <>
@@ -171,6 +195,7 @@ export default function EditorPage() {
             image={croppedImage || undefined}
             title={title}
             logo={logo || undefined}
+            logo2={logo2 || undefined}
             fontName={selectedFont}
             color={color}
             border={border}
@@ -259,6 +284,38 @@ export default function EditorPage() {
                         aria-hidden="true"
                       />
                       <span className="sr-only">Apagar logo</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+              <div className="h-16 w-px bg-white/10"></div>
+              <div className="space-y-2">
+                <Upload
+                  id="logo2"
+                  handleFiles={handleLogo2Files}
+                  label={logo2Filename ? "Trocar logo 2" : "Adicionar logo 2"}
+                />
+                {logo2Filename && (
+                  <div className="flex items-center justify-start space-x-2">
+                    <p className="text-sm leading-6 text-gray-400">
+                      {logo2Filename}
+                    </p>
+                    <button
+                      type="button"
+                      className={cn(
+                        "inline-flex items-center rounded-md px-1 py-1 text-sm font-semibold text-white shadow-sm hover:bg-white/20",
+                        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                      )}
+                      onClick={() => {
+                        setLogo2(null);
+                        setLogo2Filename("");
+                      }}
+                    >
+                      <TrashIcon
+                        className="-ml-0.4 h-4 w-4 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <span className="sr-only">Apagar logo 2</span>
                     </button>
                   </div>
                 )}

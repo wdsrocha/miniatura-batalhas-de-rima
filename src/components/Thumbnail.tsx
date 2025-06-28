@@ -12,6 +12,7 @@ interface Props {
   color: string;
   fontName: string;
   logo?: string;
+  logo2?: string;
   border: Border["type"];
   grain: Grain["type"];
 }
@@ -49,6 +50,15 @@ export const Thumbnail = forwardRef<HTMLDivElement, Props>(function Thumbnail(
             width="60"
             height="60"
             src={props.logo}
+            alt=""
+          />
+        ) : null}
+        {props.logo2 ? (
+          <Image
+            className="h-15 w-15 absolute right-3 top-3 z-10 object-contain md:h-28 md:w-28"
+            width="60"
+            height="60"
+            src={props.logo2}
             alt=""
           />
         ) : null}
