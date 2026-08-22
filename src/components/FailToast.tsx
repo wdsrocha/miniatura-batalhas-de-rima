@@ -7,6 +7,7 @@ import { Fragment, useEffect } from "react";
 interface Props {
   show: boolean;
   setShow: (open: boolean) => void;
+  message?: string;
 }
 
 const TOAST_LENGTH_SHORT = 2000;
@@ -52,7 +53,8 @@ export const FailToast = (props: Props) => {
                   <div className="ml-3 w-0 flex-1 pt-0.5">
                     <p className="text-sm font-medium text-white">Erro</p>
                     <p className="mt-1 text-sm text-gray-400">
-                      Houve um problema ao salvar sua miniatura.{" "}
+                      {props.message ??
+                        "Houve um problema ao salvar sua miniatura."}{" "}
                       <a
                         href="https://wa.me/5592982100440/"
                         className="text-sm leading-6 underline hover:text-white"

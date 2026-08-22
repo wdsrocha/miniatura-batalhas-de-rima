@@ -38,6 +38,20 @@ describe("Editor page", () => {
     cy.contains("sample-image.jpeg").should("exist");
   });
 
+  // Browsers other than Safari can't decode HEIC (the default iPhone format),
+  // so the file has to be converted before it can be cropped and exported
+  it("should accept a HEIC image", () => {
+    cy.contains("Trocar imagem").selectFile(
+      "cypress/fixtures/sample-image.heic"
+    );
+    cy.get("[data-test=crop-modal] button").click();
+    cy.contains("sample-image.heic").should("exist");
+    cy.get("[data-test=thumbnail-frame] img")
+      .first()
+      .should("have.attr", "src")
+      .and("match", /^data:image\/jpeg/);
+  });
+
   it("should change all form fields and save the final image", () => {
     cy.get("#title").type("fulano x ciclano");
 

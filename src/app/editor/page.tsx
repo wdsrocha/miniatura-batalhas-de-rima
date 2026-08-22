@@ -15,6 +15,7 @@ import { Upload } from "@/components/Upload";
 import { Border } from "@/lib/borders";
 import { fonts } from "@/lib/fonts";
 import { Grain } from "@/lib/grains";
+import { readImageFile } from "@/lib/readImageFile";
 import { getUnseenReleaseNotes, releaseNotes } from "@/lib/releaseNotes";
 import { usePersistedState } from "@/lib/usePersistedState";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
@@ -23,6 +24,11 @@ import { toPng } from "html-to-image";
 import { useEffect, useRef, useState } from "react";
 
 const MAX_FILENAME_LENGTH = 20;
+
+const truncateFilename = (filename: string) =>
+  filename.length > MAX_FILENAME_LENGTH
+    ? filename.slice(0, MAX_FILENAME_LENGTH) + "..."
+    : filename;
 
 // https://gist.github.com/codeguy/6684588?permalink_comment_id=3361909#gistcomment-3361909
 const slugify = (s: string) =>
@@ -56,6 +62,9 @@ export default function EditorPage() {
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showFailToast, setShowFailToast] = useState(false);
+  const [failMessage, setFailMessage] = useState<string | undefined>(undefined);
+  const [isLoadingImage, setIsLoadingImage] = useState(false);
+  const [isLoadingLogo, setIsLoadingLogo] = useState(false);
   const [lastVisited, setLastVisited] = usePersistedState(
     new Date().toISOString(),
     "lastVisited"
@@ -96,46 +105,55 @@ export default function EditorPage() {
       setShowSuccessToast(true);
     } catch (error) {
       console.error(error);
+      setFailMessage(undefined);
       setShowFailToast(true);
     }
   };
 
-  const handleFiles = (files: FileList | null) => {
-    if (!files?.length) {
-      return;
-    }
-
-    const file = files[0];
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setImage(event.target?.result as string);
-    };
-    reader.readAsDataURL(file as Blob);
-
-    setImageFilename(
-      file.name.length > MAX_FILENAME_LENGTH
-        ? file.name.slice(0, MAX_FILENAME_LENGTH) + "..."
-        : file.name
+  const showFileError = () => {
+    setFailMessage(
+      "Não foi possível ler esta imagem. Tente novamente com outro arquivo."
     );
-    setShowCropper(true);
+    setShowFailToast(true);
   };
 
-  const handleLogoFiles = (files: FileList | null) => {
+  const handleFiles = async (files: FileList | null) => {
     if (!files?.length) {
       return;
     }
 
     const file = files[0];
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setLogo(event.target?.result as string);
-    };
-    reader.readAsDataURL(file as Blob);
-    setLogoFilename(
-      file.name.length > MAX_FILENAME_LENGTH
-        ? file.name.slice(0, MAX_FILENAME_LENGTH) + "..."
-        : file.name
-    );
+    setIsLoadingImage(true);
+    try {
+      const dataUrl = await readImageFile(file);
+      setImage(dataUrl);
+      setImageFilename(truncateFilename(file.name));
+      setShowCropper(true);
+    } catch (error) {
+      console.error(error);
+      showFileError();
+    } finally {
+      setIsLoadingImage(false);
+    }
+  };
+
+  const handleLogoFiles = async (files: FileList | null) => {
+    if (!files?.length) {
+      return;
+    }
+
+    const file = files[0];
+    setIsLoadingLogo(true);
+    try {
+      const dataUrl = await readImageFile(file);
+      setLogo(dataUrl);
+      setLogoFilename(truncateFilename(file.name));
+    } catch (error) {
+      console.error(error);
+      showFileError();
+    } finally {
+      setIsLoadingLogo(false);
+    }
   };
 
   if (!image) {
@@ -147,6 +165,8 @@ export default function EditorPage() {
             <Upload
               id="startimage"
               handleFiles={handleFiles}
+              loading={isLoadingImage}
+              loadingLabel="Carregando imagem..."
               label="Escolha uma imagem para começar"
             />
           </div>
@@ -187,6 +207,8 @@ export default function EditorPage() {
                 <Upload
                   id="image"
                   handleFiles={handleFiles}
+                  loading={isLoadingImage}
+                  loadingLabel="Carregando imagem..."
                   label="Trocar imagem"
                 />
                 {imageFilename && (
@@ -236,6 +258,8 @@ export default function EditorPage() {
                 <Upload
                   id="logo"
                   handleFiles={handleLogoFiles}
+                  loading={isLoadingLogo}
+                  loadingLabel="Carregando logo..."
                   label={logoFilename ? "Trocar logo" : "Adicionar logo"}
                 />
                 {logoFilename && (
@@ -308,7 +332,11 @@ export default function EditorPage() {
         onSave={(croppedImage) => setCroppedImage(croppedImage)}
       />
       <SuccessToast show={showSuccessToast} setShow={setShowSuccessToast} />
-      <FailToast show={showFailToast} setShow={setShowFailToast} />
+      <FailToast
+        show={showFailToast}
+        setShow={setShowFailToast}
+        message={failMessage}
+      />
     </>
   );
 }
