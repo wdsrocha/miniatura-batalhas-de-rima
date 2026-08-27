@@ -22,6 +22,12 @@ interface ReleaseNote {
 
 export const releaseNotes: ReleaseNote[] = [
   {
+    date: "2026-08-27",
+    notes: [
+      "Agora é possível usar fotos tiradas no iPhone (formato HEIC) direto no editor, sem precisar converter antes. 📱",
+    ],
+  },
+  {
     date: "2025-05-28",
     notes: [
       "Corrigido o bug que não permitia adicionar emojis no título. Use quantos quiser! 🎉😃🔥✨",
