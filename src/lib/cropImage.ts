@@ -1,3 +1,5 @@
+import { sampleLuminance, setLastCropDiagnostics } from "./diagnostics";
+
 export const createImage = (url: string): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
     const image = new Image();
@@ -123,6 +125,31 @@ export async function getCroppedImg(
     ctx.scale(flip.horizontal ? -1 : 1, flip.vertical ? -1 : 1);
     ctx.translate(-image.width / 2, -image.height / 2);
     ctx.drawImage(image, 0, 0);
+  }
+
+  // Record what happened so a diagnostics report can tell whether the black
+  // frame originated here (crop) or later (html-to-image export). Never throws.
+  try {
+    setLastCropDiagnostics({
+      sourceNatural: { w: image.naturalWidth, h: image.naturalHeight },
+      requestedCrop: {
+        x: pixelCrop.x,
+        y: pixelCrop.y,
+        width: pixelCrop.width,
+        height: pixelCrop.height,
+      },
+      clampedCrop: { x: cropX, y: cropY, width: cropWidth, height: cropHeight },
+      clampAdjusted:
+        cropX !== Math.round(pixelCrop.x) ||
+        cropY !== Math.round(pixelCrop.y) ||
+        cropWidth !== Math.round(pixelCrop.width) ||
+        cropHeight !== Math.round(pixelCrop.height),
+      outputSize: { w: outWidth, h: outHeight },
+      transformedPath: isTransformed,
+      outputLuminance: sampleLuminance(canvas),
+    });
+  } catch {
+    /* diagnostics must never break exporting */
   }
 
   return canvas.toDataURL("image/jpeg");

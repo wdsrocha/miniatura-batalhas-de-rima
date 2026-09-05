@@ -1,4 +1,5 @@
 import { getCroppedImg } from "@/lib/cropImage";
+import { diagSession } from "@/lib/diagnostics";
 import { Dialog, Transition } from "@headlessui/react";
 import cn from "classnames";
 import { Fragment, useEffect, useState } from "react";
@@ -41,6 +42,7 @@ export const ImageCropperModal = (props: Props) => {
     setIsSaving(true);
     try {
       const croppedImage = await getCroppedImg(props.image, croppedAreaPixels, 0);
+      diagSession.bump("cropSaves");
       props.onSave(croppedImage);
       props.setOpen(false);
     } catch (error) {
