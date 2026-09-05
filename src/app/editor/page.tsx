@@ -330,6 +330,12 @@ export default function EditorPage() {
         setOpen={setShowCropper}
         image={image}
         onSave={(croppedImage) => setCroppedImage(croppedImage)}
+        onError={() => {
+          setFailMessage(
+            "Não foi possível recortar esta imagem. Tente ajustar o recorte novamente."
+          );
+          setShowFailToast(true);
+        }}
       />
       <SuccessToast show={showSuccessToast} setShow={setShowSuccessToast} />
       <FailToast
