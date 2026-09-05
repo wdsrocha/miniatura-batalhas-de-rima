@@ -14,6 +14,8 @@ const HEIC_BRANDS = [
   "hevs",
 ];
 
+import { diagSession } from "./diagnostics";
+
 const JPEG_QUALITY = 0.92;
 
 // The brand of an ISO base media file lives in the `ftyp` box, right after its
@@ -47,12 +49,21 @@ const readAsDataUrl = (blob: Blob) =>
  * so it is only downloaded when a HEIC file actually shows up.
  */
 export const readImageFile = async (file: File): Promise<string> => {
+  diagSession.bump("imagesLoaded");
+
   if (await isHeic(file)) {
+    const startedAt = performance.now();
     const { heicTo } = await import("heic-to");
     const jpeg = await heicTo({
       blob: file,
       type: "image/jpeg",
       quality: JPEG_QUALITY,
+    });
+    diagSession.bump("heicConversions");
+    diagSession.setLastHeic({
+      ms: Math.round(performance.now() - startedAt),
+      inBytes: file.size,
+      outBytes: jpeg.size,
     });
     return readAsDataUrl(jpeg);
   }

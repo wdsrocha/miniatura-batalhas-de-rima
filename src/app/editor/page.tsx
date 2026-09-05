@@ -2,6 +2,7 @@
 
 import { BorderPicker } from "@/components/BorderPicker";
 import { COLORS, ColorPicker } from "@/components/ColorPicker";
+import { DiagnosticsPanel } from "@/components/DiagnosticsPanel";
 import { FailToast } from "@/components/FailToast";
 import { FontPicker } from "@/components/FontPicker";
 import { GrainPicker } from "@/components/GrainPicker";
@@ -13,12 +14,22 @@ import { SuccessToast } from "@/components/SuccessToast";
 import { Thumbnail } from "@/components/Thumbnail";
 import { Upload } from "@/components/Upload";
 import { Border } from "@/lib/borders";
+import {
+  analyzeRenderedImage,
+  buildDiagnosticsReport,
+  describeImageElement,
+  detectEngine,
+  diagSession,
+  DiagnosticsReport,
+  isDegenerateRender,
+} from "@/lib/diagnostics";
 import { fonts } from "@/lib/fonts";
 import { Grain } from "@/lib/grains";
 import { readImageFile } from "@/lib/readImageFile";
 import { getUnseenReleaseNotes, releaseNotes } from "@/lib/releaseNotes";
 import { usePersistedState } from "@/lib/usePersistedState";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { track } from "@vercel/analytics/react";
 import cn from "classnames";
 import { toPng } from "html-to-image";
 import { useEffect, useRef, useState } from "react";
@@ -70,6 +81,8 @@ export default function EditorPage() {
     "lastVisited"
   );
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [diagnostics, setDiagnostics] = useState<DiagnosticsReport | null>(null);
+  const [debugMode, setDebugMode] = useState(false);
 
   useEffect(() => {
     const unseenReleaseNotes = getUnseenReleaseNotes(lastVisited);
@@ -77,6 +90,16 @@ export default function EditorPage() {
       setShowWelcomeModal(true);
     }
   }, [lastVisited, setLastVisited]);
+
+  useEffect(() => {
+    // `?debug=1` in the URL (or a one-off localStorage flag) makes every export
+    // open the diagnostics panel, even when nothing looked wrong — so we can ask
+    // an affected user to reproduce with it on.
+    setDebugMode(
+      new URLSearchParams(window.location.search).has("debug") ||
+        window.localStorage.getItem("miniatura:debug") === "1"
+    );
+  }, []);
 
   const onCloseReleaseNotesModal = () => {
     setShowWelcomeModal(false);
@@ -87,26 +110,150 @@ export default function EditorPage() {
     }, 1_000);
   };
 
+  const publishDiagnostics = (report: DiagnosticsReport) => {
+    (window as unknown as { __miniaturaDiagnostics?: DiagnosticsReport }).__miniaturaDiagnostics =
+      report;
+    return report;
+  };
+
   const exportImage = async () => {
-    if (!thumbnailRef.current) {
+    const node = thumbnailRef.current;
+    if (!node) {
       return;
     }
 
-    try {
-      // Why the hell it exports in the intended size? In the code, the image is
-      // 640x360, but after exporting, it changes to 1280x720. This is intended,
-      // but not expected. TODO: verify if I can trust this magic behavior
-      const base64image = await toPng(thumbnailRef.current);
-      const link = document.createElement("a");
-      link.download = `${slugify(title)}.png`;
-      link.href = base64image;
-      link.click();
+    diagSession.bump("exports");
+    const timings: Record<string, number> = {};
+    const attempts: {
+      pixelRatio: number | null;
+      ms: number;
+      luminance: Awaited<ReturnType<typeof analyzeRenderedImage>>;
+    }[] = [];
 
-      setShowSuccessToast(true);
+    try {
+      const webkit = detectEngine().webkit;
+
+      // Make sure every <img> inside the thumbnail is actually decoded before we
+      // rasterize it — html-to-image will otherwise snapshot a not-yet-painted
+      // image as a blank layer.
+      const imgs = Array.from(node.querySelectorAll("img"));
+      const imagesBefore = imgs.map(describeImageElement);
+      const decodeStart = performance.now();
+      await Promise.allSettled(
+        imgs.map((img) => (img.decode ? img.decode() : Promise.resolve()))
+      );
+      await new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
+      timings.decodeMs = Math.round(performance.now() - decodeStart);
+      const imagesAfter = imgs.map(describeImageElement);
+
+      // On iOS WebKit the *first* toPng call regularly rasterizes the thumbnail
+      // without the nested photo <img> (the SVG/foreignObject is built before
+      // html-to-image finishes embedding the resource). A throwaway warm-up call
+      // populates html-to-image's resource cache so the real renders include it.
+      if (webkit) {
+        const warmupStart = performance.now();
+        try {
+          await toPng(node);
+        } catch {
+          /* ignore — this call only exists to warm the cache */
+        }
+        timings.warmupMs = Math.round(performance.now() - warmupStart);
+      }
+
+      // Render, checking each result, until one actually contains the photo.
+      // Full device pixel ratio first; then fall back to smaller canvases, which
+      // are more reliable on WebKit.
+      // (The export is 1280x720 because the node is 640x360 at ratio 2 — or
+      // 320x180 at ratio 4 on mobile. Lower ratios trade resolution for a frame
+      // that is not black.)
+      const pixelRatios: (number | undefined)[] = [undefined, undefined, undefined, 2, 1];
+      let chosen: { dataUrl: string; luminance: (typeof attempts)[number]["luminance"] } | null =
+        null;
+
+      for (const pixelRatio of pixelRatios) {
+        const started = performance.now();
+        const dataUrl = await toPng(
+          node,
+          pixelRatio ? { pixelRatio } : undefined
+        );
+        const luminance = await analyzeRenderedImage(dataUrl);
+        attempts.push({
+          pixelRatio: pixelRatio ?? null,
+          ms: Math.round(performance.now() - started),
+          luminance,
+        });
+        if (!isDegenerateRender(luminance)) {
+          chosen = { dataUrl, luminance };
+          break;
+        }
+      }
+
+      timings.renderMs = attempts.reduce((sum, a) => sum + a.ms, 0);
+      const degenerate = !chosen;
+      if (degenerate) {
+        diagSession.bump("blackExportsDetected");
+      }
+
+      if (chosen) {
+        const link = document.createElement("a");
+        link.download = `${slugify(title)}.png`;
+        link.href = chosen.dataUrl;
+        link.click();
+      }
+
+      const report = publishDiagnostics(
+        await buildDiagnosticsReport({
+          stage: "export",
+          degenerate,
+          attemptCount: attempts.length,
+          timings,
+          imagesBefore,
+          imagesAfter,
+          attempts,
+          finalLuminance: chosen?.luminance ?? attempts[attempts.length - 1]?.luminance,
+        })
+      );
+
+      track("thumbnail-export", {
+        engine: report.environment.engine.label,
+        degenerate,
+        attempts: attempts.length,
+        cropClampAdjusted: !!report.crop?.clampAdjusted,
+        webkit: report.environment.engine.webkit,
+      });
+
+      if (degenerate) {
+        setFailMessage(
+          "Não foi possível gerar a imagem corretamente (a foto saiu em branco). Toque em “Copiar” e envie o diagnóstico para o desenvolvedor."
+        );
+        setShowFailToast(true);
+        setDiagnostics(report);
+      } else {
+        setShowSuccessToast(true);
+        if (debugMode) {
+          setDiagnostics(report);
+        }
+      }
     } catch (error) {
       console.error(error);
+      const report = publishDiagnostics(
+        await buildDiagnosticsReport({
+          stage: "export",
+          timings,
+          error:
+            error instanceof Error
+              ? `${error.name}: ${error.message}`
+              : String(error),
+        })
+      );
+      track("thumbnail-export", {
+        engine: report.environment.engine.label,
+        error: true,
+        webkit: report.environment.engine.webkit,
+      });
       setFailMessage(undefined);
       setShowFailToast(true);
+      setDiagnostics(report);
     }
   };
 
@@ -322,6 +469,22 @@ export default function EditorPage() {
             >
               Salvar imagem
             </button>
+
+            {debugMode && (
+              <button
+                type="button"
+                className="w-full rounded-md border border-white/20 px-3 py-2 text-sm font-semibold text-gray-300 hover:bg-white/10"
+                onClick={async () => {
+                  setDiagnostics(
+                    publishDiagnostics(
+                      await buildDiagnosticsReport({ stage: "manual" })
+                    )
+                  );
+                }}
+              >
+                Gerar diagnóstico
+              </button>
+            )}
           </form>
         </div>
       </main>
@@ -330,6 +493,12 @@ export default function EditorPage() {
         setOpen={setShowCropper}
         image={image}
         onSave={(croppedImage) => setCroppedImage(croppedImage)}
+        onError={() => {
+          setFailMessage(
+            "Não foi possível recortar esta imagem. Tente ajustar o recorte novamente."
+          );
+          setShowFailToast(true);
+        }}
       />
       <SuccessToast show={showSuccessToast} setShow={setShowSuccessToast} />
       <FailToast
@@ -337,6 +506,20 @@ export default function EditorPage() {
         setShow={setShowFailToast}
         message={failMessage}
       />
+      {diagnostics && (
+        <DiagnosticsPanel
+          report={diagnostics}
+          onClose={() => setDiagnostics(null)}
+          getImagePreview={async () => {
+            if (!thumbnailRef.current) return null;
+            try {
+              return await toPng(thumbnailRef.current, { pixelRatio: 0.15 });
+            } catch {
+              return null;
+            }
+          }}
+        />
+      )}
     </>
   );
 }
