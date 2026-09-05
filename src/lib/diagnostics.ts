@@ -130,6 +130,22 @@ export function sampleLuminance(source: Drawable, size = 32): LuminanceSample {
   }
 }
 
+/**
+ * A healthy thumbnail export fills the frame: the photo covers it, so it is
+ * almost fully opaque. When html-to-image drops the <img> layer on iOS WebKit
+ * (first-call race) the result is mostly transparent with only the CSS border
+ * and the title text painted — high `fractionNearBlack`, low `fractionOpaque`,
+ * but NOT caught by looksBlack (the white title keeps `max` at 255).
+ */
+export function isDegenerateRender(sample: LuminanceSample): boolean {
+  return (
+    sample.looksBlank ||
+    sample.looksBlack ||
+    sample.fractionOpaque < 0.6 ||
+    (sample.mean < 25 && sample.fractionNearBlack > 0.85)
+  );
+}
+
 function blankSample(error: string): LuminanceSample {
   return {
     mean: 0,

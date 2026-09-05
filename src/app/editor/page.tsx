@@ -18,8 +18,10 @@ import {
   analyzeRenderedImage,
   buildDiagnosticsReport,
   describeImageElement,
+  detectEngine,
   diagSession,
   DiagnosticsReport,
+  isDegenerateRender,
 } from "@/lib/diagnostics";
 import { fonts } from "@/lib/fonts";
 import { Grain } from "@/lib/grains";
@@ -122,12 +124,18 @@ export default function EditorPage() {
 
     diagSession.bump("exports");
     const timings: Record<string, number> = {};
+    const attempts: {
+      pixelRatio: number | null;
+      ms: number;
+      luminance: Awaited<ReturnType<typeof analyzeRenderedImage>>;
+    }[] = [];
 
     try {
+      const webkit = detectEngine().webkit;
+
       // Make sure every <img> inside the thumbnail is actually decoded before we
-      // rasterize it. html-to-image will otherwise snapshot a not-yet-painted
-      // image as a blank (black) layer — a known "foto preta" cause that only
-      // shows up on slower devices.
+      // rasterize it — html-to-image will otherwise snapshot a not-yet-painted
+      // image as a blank layer.
       const imgs = Array.from(node.querySelectorAll("img"));
       const imagesBefore = imgs.map(describeImageElement);
       const decodeStart = performance.now();
@@ -138,60 +146,85 @@ export default function EditorPage() {
       timings.decodeMs = Math.round(performance.now() - decodeStart);
       const imagesAfter = imgs.map(describeImageElement);
 
-      // Why the hell it exports in the intended size? In the code, the image is
-      // 640x360, but after exporting, it changes to 1280x720. This is intended,
-      // but not expected. TODO: verify if I can trust this magic behavior
-      const renderStart = performance.now();
-      let base64image = await toPng(node);
-      timings.renderMs = Math.round(performance.now() - renderStart);
-
-      let firstLuminance = await analyzeRenderedImage(base64image);
-      let retried = false;
-      if (firstLuminance.looksBlack || firstLuminance.looksBlank) {
-        // Second call is the documented html-to-image workaround for a blank
-        // first render; we keep whichever result is not degenerate.
-        retried = true;
-        const retryStart = performance.now();
-        base64image = await toPng(node);
-        timings.retryRenderMs = Math.round(performance.now() - retryStart);
+      // On iOS WebKit the *first* toPng call regularly rasterizes the thumbnail
+      // without the nested photo <img> (the SVG/foreignObject is built before
+      // html-to-image finishes embedding the resource). A throwaway warm-up call
+      // populates html-to-image's resource cache so the real renders include it.
+      if (webkit) {
+        const warmupStart = performance.now();
+        try {
+          await toPng(node);
+        } catch {
+          /* ignore — this call only exists to warm the cache */
+        }
+        timings.warmupMs = Math.round(performance.now() - warmupStart);
       }
-      const finalLuminance = retried
-        ? await analyzeRenderedImage(base64image)
-        : firstLuminance;
-      const degenerate = finalLuminance.looksBlack || finalLuminance.looksBlank;
+
+      // Render, checking each result, until one actually contains the photo.
+      // Full device pixel ratio first; then fall back to smaller canvases, which
+      // are more reliable on WebKit.
+      // (The export is 1280x720 because the node is 640x360 at ratio 2 — or
+      // 320x180 at ratio 4 on mobile. Lower ratios trade resolution for a frame
+      // that is not black.)
+      const pixelRatios: (number | undefined)[] = [undefined, undefined, undefined, 2, 1];
+      let chosen: { dataUrl: string; luminance: (typeof attempts)[number]["luminance"] } | null =
+        null;
+
+      for (const pixelRatio of pixelRatios) {
+        const started = performance.now();
+        const dataUrl = await toPng(
+          node,
+          pixelRatio ? { pixelRatio } : undefined
+        );
+        const luminance = await analyzeRenderedImage(dataUrl);
+        attempts.push({
+          pixelRatio: pixelRatio ?? null,
+          ms: Math.round(performance.now() - started),
+          luminance,
+        });
+        if (!isDegenerateRender(luminance)) {
+          chosen = { dataUrl, luminance };
+          break;
+        }
+      }
+
+      timings.renderMs = attempts.reduce((sum, a) => sum + a.ms, 0);
+      const degenerate = !chosen;
       if (degenerate) {
         diagSession.bump("blackExportsDetected");
       }
 
-      const link = document.createElement("a");
-      link.download = `${slugify(title)}.png`;
-      link.href = base64image;
-      link.click();
+      if (chosen) {
+        const link = document.createElement("a");
+        link.download = `${slugify(title)}.png`;
+        link.href = chosen.dataUrl;
+        link.click();
+      }
 
       const report = publishDiagnostics(
         await buildDiagnosticsReport({
           stage: "export",
           degenerate,
-          retried,
+          attemptCount: attempts.length,
           timings,
           imagesBefore,
           imagesAfter,
-          firstLuminance,
-          finalLuminance,
+          attempts,
+          finalLuminance: chosen?.luminance ?? attempts[attempts.length - 1]?.luminance,
         })
       );
 
       track("thumbnail-export", {
         engine: report.environment.engine.label,
         degenerate,
-        retried,
+        attempts: attempts.length,
         cropClampAdjusted: !!report.crop?.clampAdjusted,
         webkit: report.environment.engine.webkit,
       });
 
       if (degenerate) {
         setFailMessage(
-          "A imagem foi exportada, mas parece ter saído preta. Toque em “Copiar” e envie o diagnóstico para o desenvolvedor."
+          "Não foi possível gerar a imagem corretamente (a foto saiu em branco). Toque em “Copiar” e envie o diagnóstico para o desenvolvedor."
         );
         setShowFailToast(true);
         setDiagnostics(report);
